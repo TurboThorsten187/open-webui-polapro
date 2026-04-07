@@ -1,0 +1,24 @@
+services:
+  polapro:
+    build: .
+    container_name: polapro
+    ports:
+      - "3000:8080"
+    environment:
+      # --- RAG / Inference Server ---
+      - OPENAI_API_BASE_URL=http://host.docker.internal:8000/v1
+      - OPENAI_API_KEY=sk-no-key-required
+      
+      # --- Features & Localization ---
+      - DEFAULT_LOCALE=de
+      - ENABLE_COMMUNITY_SHARING=False
+      - ENABLE_OLLAMA_API=False # Deaktiviert, da du ohnehin deinen eigenen Uvicorn-Server nutzt
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - polapro-data:/app/backend/data
+    restart: unless-stopped
+
+volumes:
+  polapro-data:

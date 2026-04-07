@@ -466,9 +466,9 @@ ENABLE_SIGNUP_PASSWORD_CONFIRMATION = os.environ.get('ENABLE_SIGNUP_PASSWORD_CON
 
 # Optional env vars for creating an admin account on startup
 # Useful for headless/automated deployments
-WEBUI_ADMIN_EMAIL = os.environ.get('WEBUI_ADMIN_EMAIL', '')
-WEBUI_ADMIN_PASSWORD = os.environ.get('WEBUI_ADMIN_PASSWORD', '')
-WEBUI_ADMIN_NAME = os.environ.get('WEBUI_ADMIN_NAME', 'Admin')
+WEBUI_ADMIN_EMAIL = os.environ.get('WEBUI_ADMIN_EMAIL', 'admin@polapro.local')
+WEBUI_ADMIN_PASSWORD = os.environ.get('WEBUI_ADMIN_PASSWORD', 'Admin123!')
+WEBUI_ADMIN_NAME = os.environ.get('WEBUI_ADMIN_NAME', 'PoLaPro Admin')
 
 WEBUI_AUTH_TRUSTED_EMAIL_HEADER = os.environ.get('WEBUI_AUTH_TRUSTED_EMAIL_HEADER', None)
 WEBUI_AUTH_TRUSTED_NAME_HEADER = os.environ.get('WEBUI_AUTH_TRUSTED_NAME_HEADER', None)
