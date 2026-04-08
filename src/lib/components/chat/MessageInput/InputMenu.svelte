@@ -26,7 +26,6 @@
 	import Knowledge from './InputMenu/Knowledge.svelte';
 	import AttachWebpageModal from './AttachWebpageModal.svelte';
 	import GlobeAlt from '$lib/components/icons/GlobeAlt.svelte';
-	import { FEATURE_FLAGS } from '$lib/polapro';
 
 	const i18n = getContext('i18n');
 
@@ -126,66 +125,6 @@
 		>
 			{#if tab === ''}
 				<div in:fly={{ x: -20, duration: 150 }}>
-					{#if FEATURE_FLAGS.SHOW_UPLOAD_FILES_BUTTON}
-						<Tooltip
-							content={fileUploadCapableModels.length !== selectedModels.length
-								? $i18n.t('Model(s) do not support file upload')
-								: !fileUploadEnabled
-									? $i18n.t('You do not have permission to upload files.')
-									: ''}
-							className="w-full"
-						>
-							<button
-								class="flex w-full gap-2 items-center px-3 py-1.5 text-sm select-none cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-xl {!fileUploadEnabled
-									? 'opacity-50'
-									: ''}"
-								type="button"
-								on:click={() => {
-									if (fileUploadEnabled) {
-										uploadFilesHandler();
-									}
-								}}
-							>
-								<Clip />
-								<div class="line-clamp-1">{$i18n.t('Upload Files')}</div>
-							</button>
-						</Tooltip>
-					{/if}
-
-					{#if FEATURE_FLAGS.SHOW_CAPTURE_BUTTON}
-						<Tooltip
-							content={fileUploadCapableModels.length !== selectedModels.length
-								? $i18n.t('Model(s) do not support file upload')
-								: !fileUploadEnabled
-									? $i18n.t('You do not have permission to upload files.')
-									: ''}
-							className="w-full"
-						>
-							<button
-								class="flex w-full gap-2 items-center px-3 py-1.5 text-sm select-none cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-xl {!fileUploadEnabled
-									? 'opacity-50'
-									: ''}"
-								type="button"
-								on:click={() => {
-									if (fileUploadEnabled) {
-										if (!detectMobile()) {
-											screenCaptureHandler();
-										} else {
-											const cameraInputElement = document.getElementById('camera-input');
-
-											if (cameraInputElement) {
-												cameraInputElement.click();
-											}
-										}
-									}
-								}}
-							>
-								<Camera />
-								<div class=" line-clamp-1">{$i18n.t('Capture')}</div>
-							</button>
-						</Tooltip>
-					{/if}
-
 					<Tooltip
 						content={fileUploadCapableModels.length !== selectedModels.length
 							? $i18n.t('Model(s) do not support file upload')

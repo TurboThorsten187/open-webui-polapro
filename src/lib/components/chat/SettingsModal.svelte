@@ -19,7 +19,6 @@
 	import Connections from './Settings/Connections.svelte';
 	import Integrations from './Settings/Integrations.svelte';
 	import DatabaseSettings from '../icons/DatabaseSettings.svelte';
-	import { FEATURE_FLAGS } from '$lib/polapro';
 	import SettingsAlt from '../icons/SettingsAlt.svelte';
 	import Link from '../icons/Link.svelte';
 	import UserCircle from '../icons/UserCircle.svelte';
@@ -422,11 +421,8 @@
 				'webhook url',
 				'webhookurl'
 			]
-		}
-	];
-
-	if (FEATURE_FLAGS.SHOW_ABOUT_SETTINGS) {
-		allSettings.push({
+		},
+		{
 			id: 'about',
 			title: 'About',
 			keywords: [
@@ -463,14 +459,18 @@
 				'terms of use',
 				'termsandconditions',
 				'termsofuse',
+				'timothy jae ryang baek',
+				'timothy j baek',
+				'timothyjaeryangbaek',
+				'timothyjbaek',
 				'twitter',
 				'update info',
 				'updateinfo',
 				'version info',
 				'versioninfo'
 			]
-		});
-	}
+		}
+	];
 
 	let availableSettings = [];
 	let filteredSettings = [];

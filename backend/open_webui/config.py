@@ -1180,32 +1180,31 @@ except Exception as e:
 if default_prompt_suggestions == []:
     default_prompt_suggestions = [
         {
-            'title': ['Positionen der Parteien', 'zu Energie und Klima'],
-            'content': "Wie positionieren sich die verschiedenen Parteien zum Thema erneuerbare Energien und Klimaschutz?",
+            'title': ['Help me study', 'vocabulary for a college entrance exam'],
+            'content': "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.",
         },
         {
-            'title': ['Hauptargumente', 'zum Bundeshaushalt'],
-            'content': "Was waren die Hauptargumente von Lars Klingbeil in der letzten Debatte zum Bundeshaushalt?",
+            'title': ['Give me ideas', "for what to do with my kids' art"],
+            'content': "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.",
         },
         {
-            'title': ['Inhaltliche Unterschiede', 'in der Migrationspolitik'],
-            'content': "Was sind die größten inhaltlichen Unterschiede zwischen den Parteien CDU und die Linke bezüglich der Migrationspolitik?",
+            'title': ['Tell me a fun fact', 'about the Roman Empire'],
+            'content': 'Tell me a random fun fact about the Roman Empire',
         },
         {
-            'title': ['Zusammenfassung', 'der letzten Plenarsitzung'],
-            'content': "Fasse die wichtigsten Aussagen und Beschlüsse der letzten Plenarsitzung für mich zusammen.",
+            'title': ['Show me a code snippet', "of a website's sticky header"],
+            'content': "Show me a code snippet of a website's sticky header in CSS and JavaScript.",
         },
         {
-            'title': ['Gegenargumente', 'zum Gebäudeenergiegesetz'],
-            'content': "Welche Gegenargumente wurden am häufigsten gegen das vorgeschlagene Gebäudeenergiegesetz vorgebracht?",
+            'title': [
+                'Explain options trading',
+                "if I'm familiar with buying and selling stocks",
+            ],
+            'content': "Explain options trading in simple terms if I'm familiar with buying and selling stocks.",
         },
         {
-            'title': ['Politischer Diskurs', 'zur Digitalisierung'],
-            'content': "Wie hat sich der politische Diskurs zum Thema 'Digitalisierung der Verwaltung' über die letzten zwei Jahre entwickelt?",
-        },
-        {
-            'title': ['Gesetzesentwürfe', 'zur Wirtschaftsförderung'],
-            'content': "Welche Gesetzesentwürfe zur Förderung der Wirtschaft wurden in diesem Jahr verabschiedet?",
+            'title': ['Overcome procrastination', 'give me tips'],
+            'content': 'Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?',
         },
     ]
 
@@ -1790,16 +1789,16 @@ FOLLOW_UP_GENERATION_PROMPT_TEMPLATE = PersistentConfig(
 )
 
 DEFAULT_FOLLOW_UP_GENERATION_PROMPT_TEMPLATE = """### Task:
-Suggest 3-5 relevant follow-up questions that the user might naturally ask next based on the chat history. The focus should be on German politics, Bundestag debates, party positions, and legislative processes.
+Suggest 3-5 relevant follow-up questions or prompts that the user might naturally ask next in this conversation as a **user**, based on the chat history, to help continue or deepen the discussion.
 ### Guidelines:
-- Write all follow-up questions from the user's point of view, directed to the assistant.
-- Questions should dive deeper into political arguments, party differences, or specific details of Bundestag speeches and political topics.
-- Base the suggestions on the provided chat history. Do not repeat what was already answered.
-- If the conversation is very short, suggest general but relevant political questions (e.g., about current debates or specific party stances).
-- Provide all follow-ups in German.
+- Write all follow-up questions from the user’s point of view, directed to the assistant.
+- Make questions concise, clear, and directly related to the discussed topic(s).
+- Only suggest follow-ups that make sense given the chat content and do not repeat what was already covered.
+- If the conversation is very short or not specific, suggest more general (but relevant) follow-ups the user might ask.
+- Use the conversation's primary language; default to English if multilingual.
 - Response must be a JSON object with a "follow_ups" key containing an array of strings, no extra text or formatting.
 ### Output:
-JSON format: { "follow_ups": ["Frage 1?", "Frage 2?", "Frage 3?"] }
+JSON format: { "follow_ups": ["Question 1?", "Question 2?", "Question 3?"] }
 ### Chat History:
 <chat_history>
 {{MESSAGES:END:6}}

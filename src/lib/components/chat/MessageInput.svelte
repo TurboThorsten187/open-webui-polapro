@@ -99,7 +99,6 @@
 	import InputModal from '../common/InputModal.svelte';
 	import Expand from '../icons/Expand.svelte';
 	import QueuedMessageItem from './MessageInput/QueuedMessageItem.svelte';
-	import { FEATURE_FLAGS } from '$lib/polapro';
 
 	const i18n = getContext('i18n');
 
@@ -1623,7 +1622,7 @@
 										</div>
 									</InputMenu>
 
-									{#if FEATURE_FLAGS.SHOW_INTEGRATIONS_BUTTON && (showWebSearchButton || showImageGenerationButton || showCodeInterpreterButton || showToolsButton || (toggleFilters && toggleFilters.length > 0))}
+									{#if showWebSearchButton || showImageGenerationButton || showCodeInterpreterButton || showToolsButton || (toggleFilters && toggleFilters.length > 0)}
 										<div
 											class="flex self-center w-[1px] h-4 mx-1 bg-gray-200/50 dark:bg-gray-800/50"
 										/>
