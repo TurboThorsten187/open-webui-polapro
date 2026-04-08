@@ -7,6 +7,7 @@
 	import Marquee from './common/Marquee.svelte';
 	import SlideShow from './common/SlideShow.svelte';
 	import ArrowRightCircle from './icons/ArrowRightCircle.svelte';
+    import { polaproConfig } from '$lib/polapro_config';
 
 	export let show = true;
 	export let getStartedHandler = () => {};
@@ -38,7 +39,7 @@
 	}
 </script>
 
-{#if show}
+{#if show && polaproConfig.showChatOnboarding}
 	<div class="w-full h-screen max-h-[100dvh] text-white relative">
 		<div class="fixed m-10 z-50">
 			<div class="flex space-x-2">

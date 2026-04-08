@@ -28,4 +28,7 @@ export const polaproConfig = {
 
     // Wenn 'false' gesetzt, wird der 'Personalization' (Personalisierung) Tab in den Chat-Einstellungen ausgeblendet
     showChatPersonalizationTab: false,
+
+    // Wenn 'false' gesetzt, wird der initiale Begrüßungstext ("Explore the cosmos" etc.) vor der ersten Nachricht ausgeblendet
+    showChatOnboarding: false,
 };

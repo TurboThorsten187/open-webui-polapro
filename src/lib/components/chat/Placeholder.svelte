@@ -28,6 +28,7 @@
 	import MessageInput from './MessageInput.svelte';
 	import FolderPlaceholder from './Placeholder/FolderPlaceholder.svelte';
 	import FolderTitle from './Placeholder/FolderTitle.svelte';
+    import { polaproConfig } from '$lib/polapro_config';
 
 	const i18n = getContext('i18n');
 
@@ -241,7 +242,7 @@
 		>
 			<FolderPlaceholder folder={$selectedFolder} />
 		</div>
-	{:else}
+	{:else if polaproConfig.showChatOnboarding}
 		<div class="mx-auto max-w-2xl font-primary mt-2" in:fade={{ duration: 200, delay: 200 }}>
 			<div class="mx-5">
 				<Suggestions
