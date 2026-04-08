@@ -15,6 +15,8 @@
 	import { getTerminalServers } from '$lib/apis/terminal';
 	import { getUserSettings } from '$lib/apis/users';
 
+	import { polaproConfig } from '$lib/polapro_config';
+
 	import { WEBUI_VERSION, WEBUI_API_BASE_URL } from '$lib/constants';
 	import { compareVersion } from '$lib/utils';
 
@@ -316,7 +318,7 @@
 		};
 		setupKeyboardShortcuts();
 
-		if ($user?.role === 'admin' && ($settings?.showChangelog ?? true)) {
+		if (polaproConfig.showWhatsNewOnFirstLoad && $user?.role === 'admin' && ($settings?.showChangelog ?? true)) {
 			showChangelog.set($settings?.version !== $config.version);
 		}
 
