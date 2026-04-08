@@ -552,6 +552,9 @@
 	if (!polaproConfig.showAboutTab && selectedTab === 'about') {
 		selectedTab = 'general';
 	}
+	if (!polaproConfig.showChatIntegrationsTab && selectedTab === 'tools') {
+		selectedTab = 'general';
+	}
 
 	// Function to handle sideways scrolling
 	const scrollHandler = (event) => {
@@ -707,7 +710,7 @@
 								</button>
 							{/if}
 						{:else if tabId === 'tools'}
-							{#if $user?.role === 'admin' || ($user?.role === 'user' && $user?.permissions?.features?.direct_tool_servers)}
+							{#if polaproConfig.showChatIntegrationsTab && ($user?.role === 'admin' || ($user?.role === 'user' && $user?.permissions?.features?.direct_tool_servers))}
 								<button
 									role="tab"
 									aria-controls="tab-tools"
@@ -902,7 +905,7 @@
 							toast.success($i18n.t('Settings saved successfully!'));
 						}}
 					/>
-				{:else if selectedTab === 'tools'}
+				{:else if selectedTab === 'tools' && polaproConfig.showChatIntegrationsTab}
 					<Integrations
 						saveSettings={async (updated) => {
 							await saveSettings(updated);

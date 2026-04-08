@@ -10,4 +10,10 @@ export const polaproConfig = {
 
     // Wenn 'false' gesetzt, wird der 'About' Tab in den Einstellungen ausgeblendet
     showAboutTab: false,
+
+    // Wenn 'false' gesetzt, wird der 'Integrations' Tab in den Chat-Einstellungen ausgeblendet
+    showChatIntegrationsTab: false,
+
+    // Wenn 'false' gesetzt, wird die "Integrations"-Schaltfläche (das Plus/Zahnrad links neben der Chat-Eingabe) ausgeblendet
+    showChatInputIntegrationsMenu: false,
 };

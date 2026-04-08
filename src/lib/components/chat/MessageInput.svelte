@@ -37,6 +37,8 @@
 		temporaryChatEnabled
 	} from '$lib/stores';
 
+	import { polaproConfig } from '$lib/polapro_config';
+
 	import {
 		convertHeicToJpeg,
 		compressImage,
@@ -1622,7 +1624,7 @@
 										</div>
 									</InputMenu>
 
-									{#if showWebSearchButton || showImageGenerationButton || showCodeInterpreterButton || showToolsButton || (toggleFilters && toggleFilters.length > 0)}
+									{#if polaproConfig.showChatInputIntegrationsMenu && (showWebSearchButton || showImageGenerationButton || showCodeInterpreterButton || showToolsButton || (toggleFilters && toggleFilters.length > 0))}
 										<div
 											class="flex self-center w-[1px] h-4 mx-1 bg-gray-200/50 dark:bg-gray-800/50"
 										/>
