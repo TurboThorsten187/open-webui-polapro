@@ -27,6 +27,8 @@
 	import AttachWebpageModal from './AttachWebpageModal.svelte';
 	import GlobeAlt from '$lib/components/icons/GlobeAlt.svelte';
 
+	import { polaproConfig } from '$lib/polapro_config';
+
 	const i18n = getContext('i18n');
 
 	export let files = [];
@@ -125,6 +127,7 @@
 		>
 			{#if tab === ''}
 				<div in:fly={{ x: -20, duration: 150 }}>
+					{#if polaproConfig.showChatInputMenuUploadFiles}
 					<Tooltip
 						content={fileUploadCapableModels.length !== selectedModels.length
 							? $i18n.t('Model(s) do not support file upload')
@@ -149,7 +152,9 @@
 							<div class="line-clamp-1">{$i18n.t('Upload Files')}</div>
 						</button>
 					</Tooltip>
+					{/if}
 
+					{#if polaproConfig.showChatInputMenuCapture}
 					<Tooltip
 						content={fileUploadCapableModels.length !== selectedModels.length
 							? $i18n.t('Model(s) do not support file upload')
@@ -181,7 +186,9 @@
 							<div class=" line-clamp-1">{$i18n.t('Capture')}</div>
 						</button>
 					</Tooltip>
+					{/if}
 
+					{#if polaproConfig.showChatInputMenuAttachWebpage}
 					<Tooltip
 						content={!webUploadEnabled
 							? $i18n.t('You do not have permission to upload web content.')
@@ -203,6 +210,7 @@
 							<div class="line-clamp-1">{$i18n.t('Attach Webpage')}</div>
 						</button>
 					</Tooltip>
+					{/if}
 
 					{#if $config?.features?.enable_notes ?? false}
 						<Tooltip

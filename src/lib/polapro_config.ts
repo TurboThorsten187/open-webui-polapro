@@ -16,4 +16,13 @@ export const polaproConfig = {
 
     // Wenn 'false' gesetzt, wird die "Integrations"-Schaltfläche (das Plus/Zahnrad links neben der Chat-Eingabe) ausgeblendet
     showChatInputIntegrationsMenu: false,
+
+    // Wenn 'false' gesetzt, wird im Plus-Menü beim Chat die Option zum Hochladen von Dateien ("Upload Files") ausgeblendet
+    showChatInputMenuUploadFiles: false,
+
+    // Wenn 'false' gesetzt, wird im Plus-Menü beim Chat die Option zur Aufnahme ("Capture") ausgeblendet
+    showChatInputMenuCapture: false,
+
+    // Wenn 'false' gesetzt, wird im Plus-Menü beim Chat die Option zum Anhängen einer Webseite ("Attach Webpage") ausgeblendet
+    showChatInputMenuAttachWebpage: false,
 };
