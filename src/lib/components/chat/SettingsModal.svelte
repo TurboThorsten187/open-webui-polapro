@@ -8,6 +8,7 @@
 
 	import Modal from '../common/Modal.svelte';
 	import Account from './Settings/Account.svelte';
+	import About from './Settings/About.svelte';
 	import General from './Settings/General.svelte';
 	import Interface from './Settings/Interface.svelte';
 	import Audio from './Settings/Audio.svelte';
@@ -18,6 +19,7 @@
 	import Connections from './Settings/Connections.svelte';
 	import Integrations from './Settings/Integrations.svelte';
 	import DatabaseSettings from '../icons/DatabaseSettings.svelte';
+	import { FEATURE_FLAGS } from '$lib/polapro';
 	import SettingsAlt from '../icons/SettingsAlt.svelte';
 	import Link from '../icons/Link.svelte';
 	import UserCircle from '../icons/UserCircle.svelte';
@@ -423,6 +425,53 @@
 		}
 	];
 
+	if (FEATURE_FLAGS.SHOW_ABOUT_SETTINGS) {
+		allSettings.push({
+			id: 'about',
+			title: 'About',
+			keywords: [
+				'about app',
+				'about me',
+				'about open webui',
+				'about page',
+				'about us',
+				'aboutapp',
+				'aboutme',
+				'aboutopenwebui',
+				'aboutpage',
+				'aboutus',
+				'check for updates',
+				'checkforupdates',
+				'contact',
+				'copyright',
+				'details',
+				'discord',
+				'documentation',
+				'github',
+				'help',
+				'information',
+				'license',
+				'redistributions',
+				'release',
+				'see whats new',
+				'seewhatsnew',
+				'settings',
+				'software info',
+				'softwareinfo',
+				'support',
+				'terms and conditions',
+				'terms of use',
+				'termsandconditions',
+				'termsofuse',
+				'twitter',
+				'update info',
+				'updateinfo',
+				'version info',
+				'versioninfo'
+			]
+		});
+	}
+
 	let availableSettings = [];
 	let filteredSettings = [];
 
@@ -774,6 +823,30 @@
 								</div>
 								<div class=" self-center">{$i18n.t('Account')}</div>
 							</button>
+						{:else if tabId === 'about'}
+							<button
+								role="tab"
+								aria-controls="tab-about"
+								aria-selected={selectedTab === 'about'}
+								class={`px-0.5 md:px-2.5 py-1 min-w-fit rounded-xl flex-1 md:flex-none flex text-left transition
+								${
+									selectedTab === 'about'
+										? ($settings?.highContrastMode ?? false)
+											? 'dark:bg-gray-800 bg-gray-200'
+											: ''
+										: ($settings?.highContrastMode ?? false)
+											? 'hover:bg-gray-200 dark:hover:bg-gray-800'
+											: 'text-gray-300 dark:text-gray-600 hover:text-gray-700 dark:hover:text-white'
+								}`}
+								on:click={() => {
+									selectedTab = 'about';
+								}}
+							>
+								<div class=" self-center mr-2">
+									<InfoCircle strokeWidth="2" />
+								</div>
+								<div class=" self-center">{$i18n.t('About')}</div>
+							</button>
 						{/if}
 					{/each}
 				{:else}
@@ -854,6 +927,8 @@
 							toast.success($i18n.t('Settings saved successfully!'));
 						}}
 					/>
+				{:else if selectedTab === 'about'}
+					<About />
 				{/if}
 			</div>
 		</div>

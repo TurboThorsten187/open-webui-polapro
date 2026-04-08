@@ -45,8 +45,10 @@
 	import SettingsModal from '$lib/components/chat/SettingsModal.svelte';
 	import ChangelogModal from '$lib/components/ChangelogModal.svelte';
 	import AccountPending from '$lib/components/layout/Overlay/AccountPending.svelte';
+	import UpdateInfoToast from '$lib/components/layout/UpdateInfoToast.svelte';
 	import Spinner from '$lib/components/common/Spinner.svelte';
 	import { Shortcut, shortcuts } from '$lib/shortcuts';
+	import { FEATURE_FLAGS } from '$lib/polapro';
 
 	const i18n = getContext('i18n');
 
@@ -315,8 +317,8 @@
 		};
 		setupKeyboardShortcuts();
 
-		if ($user?.role === 'admin' && ($settings?.showChangelog ?? true)) {
-			// showChangelog.set($settings?.version !== $config.version);
+		if (FEATURE_FLAGS.SHOW_CHANGELOG && $user?.role === 'admin' && ($settings?.showChangelog ?? true)) {
+			showChangelog.set($settings?.version !== $config.version);
 		}
 
 		if ($user?.role === 'admin' || ($user?.permissions?.chat?.temporary ?? true)) {
@@ -377,6 +379,18 @@
 
 <SettingsModal bind:show={$showSettings} />
 <ChangelogModal bind:show={$showChangelog} />
+
+{#if FEATURE_FLAGS.SHOW_UPDATE_TOAST && version && compareVersion(version.latest, version.current) && ($settings?.showUpdateToast ?? true)}
+	<div class=" absolute bottom-8 right-8 z-50" in:fade={{ duration: 100 }}>
+		<UpdateInfoToast
+			{version}
+			on:close={() => {
+				localStorage.setItem('dismissedUpdateToast', Date.now().toString());
+				version = null;
+			}}
+		/>
+	</div>
+{/if}
 
 {#if $user}
 	<div class="app relative">
