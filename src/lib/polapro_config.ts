@@ -25,4 +25,7 @@ export const polaproConfig = {
 
     // Wenn 'false' gesetzt, wird im Plus-Menü beim Chat die Option zum Anhängen einer Webseite ("Attach Webpage") ausgeblendet
     showChatInputMenuAttachWebpage: false,
+
+    // Wenn 'false' gesetzt, wird der 'Personalization' (Personalisierung) Tab in den Chat-Einstellungen ausgeblendet
+    showChatPersonalizationTab: false,
 };

@@ -555,6 +555,9 @@
 	if (!polaproConfig.showChatIntegrationsTab && selectedTab === 'tools') {
 		selectedTab = 'general';
 	}
+	if (!polaproConfig.showChatPersonalizationTab && selectedTab === 'personalization') {
+		selectedTab = 'general';
+	}
 
 	// Function to handle sideways scrolling
 	const scrollHandler = (event) => {
@@ -735,7 +738,7 @@
 									<div class=" self-center">{$i18n.t('Integrations')}</div>
 								</button>
 							{/if}
-						{:else if tabId === 'personalization'}
+						{:else if tabId === 'personalization' && polaproConfig.showChatPersonalizationTab}
 							<button
 								role="tab"
 								aria-controls="tab-personalization"
@@ -912,7 +915,7 @@
 							toast.success($i18n.t('Settings saved successfully!'));
 						}}
 					/>
-				{:else if selectedTab === 'personalization'}
+				{:else if selectedTab === 'personalization' && polaproConfig.showChatPersonalizationTab}
 					<Personalization
 						{saveSettings}
 						on:save={() => {
