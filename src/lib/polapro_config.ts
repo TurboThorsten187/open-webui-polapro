@@ -4,4 +4,7 @@ export const polaproConfig = {
     
     // Wenn 'false' gesetzt, wird die Update-Benachrichtigung für Administratoren unten rechts nicht angezeigt
     showUpdateToast: false,
+
+    // Wenn 'false' gesetzt, wird der Controls-Button rechts oben ausgeblendet
+    showChatControlsButton: false,
 };
