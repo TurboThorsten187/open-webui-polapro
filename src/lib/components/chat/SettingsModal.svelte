@@ -29,6 +29,8 @@
 	import AppNotification from '../icons/AppNotification.svelte';
 	import UserBadgeCheck from '../icons/UserBadgeCheck.svelte';
 
+	import { polaproConfig } from '$lib/polapro_config';
+
 	const i18n = getContext('i18n');
 
 	export let show = false;
@@ -547,6 +549,9 @@
 	};
 
 	let selectedTab = 'general';
+	if (!polaproConfig.showAboutTab && selectedTab === 'about') {
+		selectedTab = 'general';
+	}
 
 	// Function to handle sideways scrolling
 	const scrollHandler = (event) => {
@@ -823,7 +828,7 @@
 								</div>
 								<div class=" self-center">{$i18n.t('Account')}</div>
 							</button>
-						{:else if tabId === 'about'}
+						{:else if tabId === 'about' && polaproConfig.showAboutTab}
 							<button
 								role="tab"
 								aria-controls="tab-about"
@@ -927,7 +932,7 @@
 							toast.success($i18n.t('Settings saved successfully!'));
 						}}
 					/>
-				{:else if selectedTab === 'about'}
+				{:else if selectedTab === 'about' && polaproConfig.showAboutTab}
 					<About />
 				{/if}
 			</div>

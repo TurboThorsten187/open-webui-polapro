@@ -7,4 +7,7 @@ export const polaproConfig = {
 
     // Wenn 'false' gesetzt, wird der Controls-Button rechts oben ausgeblendet
     showChatControlsButton: false,
+
+    // Wenn 'false' gesetzt, wird der 'About' Tab in den Einstellungen ausgeblendet
+    showAboutTab: false,
 };
