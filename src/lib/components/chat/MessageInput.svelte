@@ -89,8 +89,10 @@
 	import Terminal from '../icons/Terminal.svelte';
 	import IntegrationsMenu from './MessageInput/IntegrationsMenu.svelte';
 	import TerminalMenu from './MessageInput/TerminalMenu.svelte';
+	import MetadataMenu from './MessageInput/MetadataMenu.svelte';
 	import Component from '../icons/Component.svelte';
 	import PlusAlt from '../icons/PlusAlt.svelte';
+	import Tag from '../icons/Tag.svelte';
 	import Dropdown from '../common/Dropdown.svelte';
 
 	import CommandSuggestionList from './MessageInput/CommandSuggestionList.svelte';
@@ -125,6 +127,50 @@
 
 	export let prompt = '';
 	export let files = [];
+
+	export let showMetadataMenu = false;
+	export let metadata = {
+		firstName: '',
+		lastName: '',
+		party: '',
+		role: '',
+		electoralTerm: '',
+		dateFrom: '',
+		dateTo: '',
+		speechId: ''
+	};
+
+	const handleSubmit = () => {
+		let finalPrompt = prompt;
+		if (polaproConfig.showMetadataMenu && 
+		   (metadata.firstName || metadata.lastName || metadata.party || metadata.role || metadata.electoralTerm || metadata.dateFrom || metadata.dateTo || metadata.speechId)) {
+			let mStr = '<Metadaten>\n';
+			if (metadata.firstName) mStr += `Vorname: ${metadata.firstName}\n`;
+			if (metadata.lastName) mStr += `Nachname: ${metadata.lastName}\n`;
+			if (metadata.party) mStr += `Fraktion/Partei: ${metadata.party}\n`;
+			if (metadata.role) mStr += `Position/Rolle: ${metadata.role}\n`;
+			if (metadata.electoralTerm) mStr += `Wahlperiode: ${metadata.electoralTerm}\n`;
+			if (metadata.dateFrom || metadata.dateTo) {
+				mStr += `Datum: ${metadata.dateFrom ? `von ${metadata.dateFrom} ` : ''}${metadata.dateTo ? `bis ${metadata.dateTo}` : ''}\n`;
+			}
+			if (metadata.speechId) mStr += `Rede-ID: ${metadata.speechId}\n`;
+			mStr += '</Metadaten>\n\n';
+			finalPrompt = mStr + prompt;
+		}
+
+		metadata = {
+			firstName: '',
+			lastName: '',
+			party: '',
+			role: '',
+			electoralTerm: '',
+			dateFrom: '',
+			dateTo: '',
+			speechId: ''
+		};
+
+		dispatch('submit', finalPrompt);
+	};
 
 	export let selectedToolIds = [];
 	export let selectedFilterIds = [];
@@ -1201,7 +1247,7 @@
 								document.getElementById('chat-input')?.focus();
 
 								if ($settings?.speechAutoSend ?? false) {
-									dispatch('submit', prompt);
+									handleSubmit();
 								}
 							}}
 						/>
@@ -1210,7 +1256,7 @@
 						class="w-full flex flex-col gap-1.5 {recording ? 'hidden' : ''}"
 						on:submit|preventDefault={() => {
 							// check if selectedModels support image input
-							dispatch('submit', prompt);
+							handleSubmit();
 						}}
 					>
 						<button
@@ -1502,7 +1548,7 @@
 																if (enterPressed) {
 																	e.preventDefault();
 																	if (prompt !== '' || files.length > 0) {
-																		dispatch('submit', prompt);
+																		handleSubmit();
 																	}
 																}
 															}
@@ -1622,7 +1668,20 @@
 										>
 											<PlusAlt className="size-5.5" />
 										</div>
+
 									</InputMenu>
+
+{#if polaproConfig.showMetadataMenu}
+<MetadataMenu bind:show={showMetadataMenu} bind:metadata={metadata}>
+<button
+type="button"
+class="bg-transparent hover:bg-gray-100 text-gray-700 dark:text-white dark:hover:bg-gray-800 rounded-full size-8 flex justify-center items-center outline-hidden focus:outline-hidden"
+
+>
+<Tag className="size-5.5" />
+</button>
+</MetadataMenu>
+{/if}
 
 									{#if polaproConfig.showChatInputIntegrationsMenu && (showWebSearchButton || showImageGenerationButton || showCodeInterpreterButton || showToolsButton || (toggleFilters && toggleFilters.length > 0))}
 										<div
@@ -2045,3 +2104,5 @@
 		</div>
 	</div>
 {/if}
+
+

@@ -31,4 +31,19 @@ export const polaproConfig = {
 
     // Wenn 'false' gesetzt, wird der initiale Begrüßungstext ("Explore the cosmos" etc.) vor der ersten Nachricht ausgeblendet
     showChatOnboarding: true,
+
+    // --- Metadaten Feature ---
+    // Hauptschalter für das Metadaten-Menü neben dem Plus-Button
+    showMetadataMenu: true,
+    
+    // Einzelne Felder im Metadaten-Menü
+    metadataFields: {
+        firstName: true,
+        lastName: true,
+        party: true,
+        role: true,
+        electoralTerm: true,
+        dateRange: true,
+        speechId: true
+    }
 };
