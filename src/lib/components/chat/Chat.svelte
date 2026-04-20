@@ -1759,7 +1759,7 @@
 	// Chat functions
 	//////////////////////////
 
-	const submitPrompt = async (userPrompt, { _raw = false } = {}) => {
+	const submitPrompt = async (userPrompt, { _raw = false, metadataStr = undefined } = {}) => {
 		console.log('submitPrompt', userPrompt, $chatId);
 
 		const _selectedModels = selectedModels.map((modelId) =>
@@ -1870,6 +1870,7 @@
 			childrenIds: [],
 			role: 'user',
 			content: userPrompt,
+			info: metadataStr ? { metadataStr } : undefined,
 			files: _files.length > 0 ? _files : undefined,
 			timestamp: Math.floor(Date.now() / 1000), // Unix epoch
 			models: selectedModels
@@ -2146,6 +2147,8 @@
 
 				return {
 					role: message.role,
+					// Preserve info so metadata injection can work
+					...(message.info ? { info: message.info } : {}),
 					// Preserve output items so backend can reconstruct tool_calls/tool-role messages (temp chats)
 					...(message.output ? { output: message.output } : {}),
 					...(message.role === 'user' && imageFiles.length > 0
@@ -2909,10 +2912,14 @@
 									}}
 									on:submit={async (e) => {
 										clearDraft();
-										if (e.detail || files.length > 0) {
+										// e.detail is now an object { prompt, metadataStr }
+										const promptText = typeof e.detail === 'object' && e.detail.prompt !== undefined ? e.detail.prompt : e.detail;
+										const metadataStr = typeof e.detail === 'object' && e.detail.metadataStr !== undefined ? e.detail.metadataStr : undefined;
+
+										if (promptText || files.length > 0) {
 											await tick();
 
-											submitPrompt(e.detail.replaceAll('\n\n', '\n'));
+											submitPrompt(promptText.replaceAll('\n\n', '\n'), { metadataStr: metadataStr });
 										}
 									}}
 								/>
@@ -2953,9 +2960,14 @@
 									}}
 									on:submit={async (e) => {
 										clearDraft();
-										if (e.detail || files.length > 0) {
+										// e.detail is now an object { prompt, metadataStr }
+										const promptText = typeof e.detail === 'object' && e.detail.prompt !== undefined ? e.detail.prompt : e.detail;
+										const metadataStr = typeof e.detail === 'object' && e.detail.metadataStr !== undefined ? e.detail.metadataStr : undefined;
+
+										if (promptText || files.length > 0) {
 											await tick();
-											submitPrompt(e.detail.replaceAll('\n\n', '\n'));
+
+											submitPrompt(promptText.replaceAll('\n\n', '\n'), { metadataStr: metadataStr });
 										}
 									}}
 								/>

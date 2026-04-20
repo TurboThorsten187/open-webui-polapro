@@ -2079,7 +2079,7 @@ def load_messages_from_db(chat_id: str, message_id: str) -> Optional[list[dict]]
     if not db_messages:
         return None
 
-    return [{k: v for k, v in msg.items() if k in ('role', 'content', 'output', 'files')} for msg in db_messages]
+    return [{k: v for k, v in msg.items() if k in ('role', 'content', 'output', 'info', 'files')} for msg in db_messages]
 
 
 def process_messages_with_output(messages: list[dict]) -> list[dict]:
@@ -2180,6 +2180,18 @@ async def process_chat_payload(request, form_data, user, metadata, model):
 
     # Process messages with OR-aligned output items for clean LLM messages
     form_data['messages'] = process_messages_with_output(form_data.get('messages', []))
+
+    # Inject info['metadataStr'] into content if present
+    for message in form_data['messages']:
+        if message.get('role') == 'user' and isinstance(message.get('info'), dict) and message['info'].get('metadataStr'):
+            meta_str = message['info']['metadataStr']
+            if isinstance(message.get('content'), str):
+                message['content'] = meta_str + message['content']
+            elif isinstance(message.get('content'), list):
+                if len(message['content']) > 0 and message['content'][0].get('type') == 'text':
+                    message['content'][0]['text'] = meta_str + message['content'][0]['text']
+                else:
+                    message['content'].insert(0, {'type': 'text', 'text': meta_str})
 
     system_message = get_system_message(form_data.get('messages', []))
     if system_message:  # Chat Controls/User Settings

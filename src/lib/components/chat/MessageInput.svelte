@@ -140,22 +140,21 @@
 		speechId: ''
 	};
 
-	const handleSubmit = () => {
+		const handleSubmit = () => {
 		let finalPrompt = prompt;
-		if (polaproConfig.showMetadataMenu && 
-		   (metadata.firstName || metadata.lastName || metadata.party || metadata.role || metadata.electoralTerm || metadata.dateFrom || metadata.dateTo || metadata.speechId)) {
+		let metadataStr = '';
+		if (polaproConfig.showMetadataMenu) {
 			let mStr = '<Metadaten>\n';
-			if (metadata.firstName) mStr += `Vorname: ${metadata.firstName}\n`;
-			if (metadata.lastName) mStr += `Nachname: ${metadata.lastName}\n`;
-			if (metadata.party) mStr += `Fraktion/Partei: ${metadata.party}\n`;
-			if (metadata.role) mStr += `Position/Rolle: ${metadata.role}\n`;
-			if (metadata.electoralTerm) mStr += `Wahlperiode: ${metadata.electoralTerm}\n`;
-			if (metadata.dateFrom || metadata.dateTo) {
-				mStr += `Datum: ${metadata.dateFrom ? `von ${metadata.dateFrom} ` : ''}${metadata.dateTo ? `bis ${metadata.dateTo}` : ''}\n`;
-			}
-			if (metadata.speechId) mStr += `Rede-ID: ${metadata.speechId}\n`;
+			mStr += `Vorname: ${metadata.firstName || 'null'}\n`;
+			mStr += `Nachname: ${metadata.lastName || 'null'}\n`;
+			mStr += `Fraktion/Partei: ${metadata.party || 'null'}\n`;
+			mStr += `Position/Rolle: ${metadata.role || 'null'}\n`;
+			mStr += `Wahlperiode: ${metadata.electoralTerm || 'null'}\n`;
+			mStr += `Datum von: ${metadata.dateFrom || 'null'}\n`;
+			mStr += `Datum bis: ${metadata.dateTo || 'null'}\n`;
+			mStr += `Rede-ID: ${metadata.speechId || 'null'}\n`;
 			mStr += '</Metadaten>\n\n';
-			finalPrompt = mStr + prompt;
+			metadataStr = mStr;
 		}
 
 		metadata = {
@@ -169,7 +168,8 @@
 			speechId: ''
 		};
 
-		dispatch('submit', finalPrompt);
+		
+                dispatch('submit', { prompt: finalPrompt, metadataStr });
 	};
 
 	export let selectedToolIds = [];
