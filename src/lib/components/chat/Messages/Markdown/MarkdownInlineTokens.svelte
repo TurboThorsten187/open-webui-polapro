@@ -25,6 +25,7 @@
 	export let done = true;
 	export let tokens: Token[];
 	export let sourceIds = [];
+	export let polaproCitations = [];
 	export let onSourceClick: Function = () => {};
 
 	/**
@@ -84,7 +85,7 @@
 				title={token.title}
 				on:click={(e) => handleLinkClick(e, token.href)}
 			>
-				<svelte:self id={`${id}-a`} tokens={token.tokens} {onSourceClick} {done} />
+				<svelte:self id={`${id}-a`} tokens={token.tokens} {onSourceClick} {polaproCitations} {done} />
 			</a>
 		{:else}
 			<a
@@ -98,15 +99,15 @@
 	{:else if token.type === 'image'}
 		<Image src={token.href} alt={token.text} />
 	{:else if token.type === 'strong'}
-		<strong><svelte:self id={`${id}-strong`} tokens={token.tokens} {onSourceClick} /></strong>
+		<strong><svelte:self id={`${id}-strong`} tokens={token.tokens} {onSourceClick} {polaproCitations} /></strong>
 	{:else if token.type === 'em'}
-		<em><svelte:self id={`${id}-em`} tokens={token.tokens} {onSourceClick} /></em>
+		<em><svelte:self id={`${id}-em`} tokens={token.tokens} {onSourceClick} {polaproCitations} /></em>
 	{:else if token.type === 'codespan'}
 		<CodespanToken {token} {done} />
 	{:else if token.type === 'br'}
 		<br />
 	{:else if token.type === 'del'}
-		<del><svelte:self id={`${id}-del`} tokens={token.tokens} {onSourceClick} /></del>
+		<del><svelte:self id={`${id}-del`} tokens={token.tokens} {onSourceClick} {polaproCitations} /></del>
 	{:else if token.type === 'inlineKatex'}
 		{#if token.text}
 			<KatexRenderer content={token.text} displayMode={false} />
@@ -131,8 +132,8 @@
 			`<sup class="footnote-ref footnote-ref-text">${token.escapedText}</sup>`
 		) || ''}
 	{:else if token.type === 'citation'}
-		{#if (sourceIds ?? []).length > 0}
-			<SourceToken {id} {token} {sourceIds} onClick={onSourceClick} />
+		{#if (sourceIds ?? []).length > 0 || (polaproCitations ?? []).length > 0}
+			<SourceToken {id} {token} {sourceIds} {polaproCitations} onClick={onSourceClick} />
 		{:else}
 			<TextToken {token} {done} />
 		{/if}

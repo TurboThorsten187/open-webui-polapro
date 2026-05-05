@@ -26,6 +26,7 @@
 	export let topPadding = false;
 
 	export let sourceIds = [];
+	export let polaproCitations = [];
 
 	export let onSave = () => {};
 	export let onUpdate = () => {};
@@ -103,6 +104,7 @@
 		{paragraphTag}
 		{editCodeBlock}
 		{sourceIds}
+		{polaproCitations}
 		{topPadding}
 		{onTaskClick}
 		{onSourceClick}

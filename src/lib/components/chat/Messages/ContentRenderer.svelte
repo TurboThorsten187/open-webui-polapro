@@ -14,6 +14,7 @@
 	} from '$lib/stores';
 	import FloatingButtons from '../ContentRenderer/FloatingButtons.svelte';
 	import { createMessagesList } from '$lib/utils';
+	import { extractCitationData } from '$lib/utils/citation-utils';
 
 	export let id;
 	export let content;
@@ -44,6 +45,16 @@
 
 	let sourceIds = [];
 	$: getSourceIds(sources);
+
+	// --- PoLaPro citation extraction ---
+	let cleanContent = content;
+	let polaproCitations = [];
+
+	$: {
+		const result = extractCitationData(content);
+		cleanContent = result.cleanContent;
+		polaproCitations = result.citations;
+	}
 
 	const getSourceIds = (sources) => {
 		const result = [];
@@ -160,7 +171,7 @@
 <div bind:this={contentContainerElement}>
 	<Markdown
 		{id}
-		{content}
+		content={cleanContent}
 		{model}
 		{save}
 		{preview}
@@ -168,6 +179,7 @@
 		{editCodeBlock}
 		{topPadding}
 		{sourceIds}
+		{polaproCitations}
 		{onSourceClick}
 		{onTaskClick}
 		{onSave}

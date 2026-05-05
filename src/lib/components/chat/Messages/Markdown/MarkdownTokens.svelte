@@ -31,6 +31,7 @@
 	export let top = true;
 	export let attributes = {};
 	export let sourceIds = [];
+	export let polaproCitations = [];
 
 	export let done = true;
 
@@ -148,6 +149,7 @@
 				tokens={token.tokens}
 				{done}
 				{sourceIds}
+				{polaproCitations}
 				{onSourceClick}
 			/>
 		</svelte:element>
@@ -201,6 +203,7 @@
 												tokens={header.tokens}
 												{done}
 												{sourceIds}
+												{polaproCitations}
 												{onSourceClick}
 											/>
 										</div>
@@ -227,6 +230,7 @@
 												tokens={cell.tokens}
 												{done}
 												{sourceIds}
+												{polaproCitations}
 												{onSourceClick}
 											/>
 										</div>
@@ -277,6 +281,7 @@
 					{editCodeBlock}
 					{onTaskClick}
 					{sourceIds}
+					{polaproCitations}
 					{onSourceClick}
 				/>
 			</blockquote>
@@ -312,6 +317,7 @@
 							{editCodeBlock}
 							{onTaskClick}
 							{sourceIds}
+							{polaproCitations}
 							{onSourceClick}
 						/>
 					</li>
@@ -347,6 +353,7 @@
 									{editCodeBlock}
 									{onTaskClick}
 									{sourceIds}
+									{polaproCitations}
 									{onSourceClick}
 								/>
 							</div>
@@ -359,6 +366,7 @@
 								{editCodeBlock}
 								{onTaskClick}
 								{sourceIds}
+								{polaproCitations}
 								{onSourceClick}
 							/>
 						{/if}
@@ -401,6 +409,7 @@
 									{editCodeBlock}
 									{onTaskClick}
 									{sourceIds}
+									{polaproCitations}
 									{onSourceClick}
 								/>
 							</div>
@@ -448,6 +457,7 @@
 						{editCodeBlock}
 						{onTaskClick}
 						{sourceIds}
+						{polaproCitations}
 						{onSourceClick}
 					/>
 				</div>
@@ -486,6 +496,7 @@
 					tokens={token.tokens ?? []}
 					{done}
 					{sourceIds}
+					{polaproCitations}
 					{onSourceClick}
 				/>
 			</span>
@@ -496,6 +507,7 @@
 					tokens={token.tokens ?? []}
 					{done}
 					{sourceIds}
+					{polaproCitations}
 					{onSourceClick}
 				/>
 			</p>
@@ -509,6 +521,7 @@
 						tokens={token.tokens}
 						{done}
 						{sourceIds}
+						{polaproCitations}
 						{onSourceClick}
 					/>
 				{:else}
@@ -521,6 +534,7 @@
 				tokens={token.tokens ?? []}
 				{done}
 				{sourceIds}
+				{polaproCitations}
 				{onSourceClick}
 			/>
 		{:else}
