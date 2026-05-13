@@ -219,6 +219,7 @@
 	/* ────────────────────────────────────────────────────────────────
 	   PoLaPro Citation Popover – NotebookLM style
 	   Self-contained CSS – no Tailwind dependency for the popover
+	   Theme-aware: light-mode by default, dark-mode via .dark class
 	   ──────────────────────────────────────────────────────────────── */
 
 	.polacite-wrapper {
@@ -226,9 +227,10 @@
 		display: inline;
 	}
 
+	/* ── Trigger (inline citation link) ── */
 	.polacite-trigger {
 		display: inline;
-		color: #3b82f6;
+		color: #2563eb;
 		font-weight: 700;
 		font-size: 0.75em;
 		cursor: pointer;
@@ -240,9 +242,16 @@
 		line-height: 1;
 	}
 	.polacite-trigger:hover {
+		color: #1d4ed8;
+	}
+	:global(.dark) .polacite-trigger {
+		color: #3b82f6;
+	}
+	:global(.dark) .polacite-trigger:hover {
 		color: #60a5fa;
 	}
 
+	/* ── Popover container ── */
 	.polacite-popover {
 		position: absolute;
 		z-index: 9999;
@@ -251,17 +260,25 @@
 		margin-bottom: 0.5rem;
 		width: 400px;
 		max-height: 400px;
-		background: #202123;
-		border: 1px solid #3b3b3b;
+		background: #ffffff;
+		border: 1px solid #e2e8f0;
 		border-radius: 12px;
 		box-shadow:
-			0 20px 60px rgba(0, 0, 0, 0.45),
-			0 0 0 1px rgba(255, 255, 255, 0.04);
-		color: #d1d5db;
+			0 20px 60px rgba(0, 0, 0, 0.12),
+			0 0 0 1px rgba(0, 0, 0, 0.04);
+		color: #374151;
 		font-size: 0.875rem;
 		overflow: hidden;
 		transform: translateX(-10%);
 		animation: polacite-fade-in 0.15s ease-out;
+	}
+	:global(.dark) .polacite-popover {
+		background: #202123;
+		border-color: #3b3b3b;
+		box-shadow:
+			0 20px 60px rgba(0, 0, 0, 0.45),
+			0 0 0 1px rgba(255, 255, 255, 0.04);
+		color: #d1d5db;
 	}
 
 	@keyframes polacite-fade-in {
@@ -295,43 +312,61 @@
 		animation: polacite-fade-in-below 0.15s ease-out;
 	}
 
-	/* Header */
+	/* ── Header ── */
 	.polacite-header {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		padding: 12px 16px 8px;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 	}
+	:global(.dark) .polacite-header {
+		border-bottom-color: rgba(255, 255, 255, 0.08);
+	}
+
 	.polacite-header-left {
 		display: flex;
 		align-items: center;
 		gap: 8px;
 		min-width: 0;
 	}
+
 	.polacite-badge {
-		background: rgba(59, 130, 246, 0.15);
-		color: #60a5fa;
+		background: rgba(37, 99, 235, 0.1);
+		color: #2563eb;
 		font-size: 0.7rem;
 		font-weight: 700;
 		padding: 2px 8px;
 		border-radius: 6px;
 		flex-shrink: 0;
 	}
+	:global(.dark) .polacite-badge {
+		background: rgba(59, 130, 246, 0.15);
+		color: #60a5fa;
+	}
+
 	.polacite-speaker {
 		font-weight: 600;
-		color: #e5e7eb;
+		color: #1f2937;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+	:global(.dark) .polacite-speaker {
+		color: #e5e7eb;
+	}
+
 	.polacite-party {
-		color: #9ca3af;
+		color: #6b7280;
 		font-size: 0.75rem;
 		flex-shrink: 0;
 	}
+	:global(.dark) .polacite-party {
+		color: #9ca3af;
+	}
+
 	.polacite-close {
-		color: #64748b;
+		color: #94a3b8;
 		padding: 4px;
 		margin-right: -4px;
 		background: none;
@@ -341,29 +376,45 @@
 		transition: color 0.15s, background 0.15s;
 	}
 	.polacite-close:hover {
+		color: #374151;
+		background: rgba(0, 0, 0, 0.06);
+	}
+	:global(.dark) .polacite-close {
+		color: #64748b;
+	}
+	:global(.dark) .polacite-close:hover {
 		color: #d1d5db;
 		background: rgba(255, 255, 255, 0.08);
 	}
+
 	.polacite-close-icon {
 		width: 16px;
 		height: 16px;
 	}
 
-	/* Metadata row */
+	/* ── Metadata row ── */
 	.polacite-meta {
 		padding: 8px 16px;
 		font-size: 0.72rem;
-		color: #9ca3af;
+		color: #6b7280;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 4px 12px;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 	}
+	:global(.dark) .polacite-meta {
+		color: #9ca3af;
+		border-bottom-color: rgba(255, 255, 255, 0.06);
+	}
+
 	.polacite-score {
+		color: rgba(22, 163, 74, 0.85);
+	}
+	:global(.dark) .polacite-score {
 		color: rgba(74, 222, 128, 0.8);
 	}
 
-	/* Scrollable chunk text */
+	/* ── Scrollable chunk text ── */
 	.polacite-chunk-scroll {
 		padding: 12px 16px;
 		max-height: 200px;
@@ -376,29 +427,42 @@
 		background: transparent;
 	}
 	.polacite-chunk-scroll::-webkit-scrollbar-thumb {
-		background: #4b4b4b;
+		background: #cbd5e1;
 		border-radius: 4px;
 	}
+	:global(.dark) .polacite-chunk-scroll::-webkit-scrollbar-thumb {
+		background: #4b4b4b;
+	}
+
 	.polacite-chunk-text {
-		border-left: 3px solid rgba(156, 163, 175, 0.35);
+		border-left: 3px solid rgba(107, 114, 128, 0.3);
 		padding-left: 12px;
 		font-style: italic;
-		color: #d1d5db;
+		color: #374151;
 		line-height: 1.6;
 		user-select: text;
 		-webkit-user-select: text;
 		white-space: pre-wrap;
 		word-break: break-word;
 	}
+	:global(.dark) .polacite-chunk-text {
+		border-left-color: rgba(156, 163, 175, 0.35);
+		color: #d1d5db;
+	}
 
-	/* Footer */
+	/* ── Footer ── */
 	.polacite-footer {
 		padding: 10px 16px;
-		border-top: 1px solid rgba(255, 255, 255, 0.06);
+		border-top: 1px solid rgba(0, 0, 0, 0.06);
+		background: rgba(0, 0, 0, 0.025);
+	}
+	:global(.dark) .polacite-footer {
+		border-top-color: rgba(255, 255, 255, 0.06);
 		background: rgba(0, 0, 0, 0.15);
 	}
+
 	.polacite-link {
-		color: #60a5fa;
+		color: #2563eb;
 		font-size: 0.75rem;
 		display: inline-flex;
 		align-items: center;
@@ -408,8 +472,15 @@
 		width: fit-content;
 	}
 	.polacite-link:hover {
+		color: #1d4ed8;
+	}
+	:global(.dark) .polacite-link {
+		color: #60a5fa;
+	}
+	:global(.dark) .polacite-link:hover {
 		color: #93bbfc;
 	}
+
 	.polacite-link-icon {
 		width: 12px;
 		height: 12px;
