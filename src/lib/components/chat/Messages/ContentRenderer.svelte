@@ -49,11 +49,13 @@
 	// --- PoLaPro citation extraction ---
 	let cleanContent = content;
 	let polaproCitations = [];
+	let filterMetadata = null;
 
 	$: {
 		const result = extractCitationData(content);
 		cleanContent = result.cleanContent;
 		polaproCitations = result.citations;
+		filterMetadata = result.filterMetadata;
 	}
 
 	const getSourceIds = (sources) => {
@@ -180,6 +182,7 @@
 		{topPadding}
 		{sourceIds}
 		{polaproCitations}
+		{filterMetadata}
 		{onSourceClick}
 		{onTaskClick}
 		{onSave}

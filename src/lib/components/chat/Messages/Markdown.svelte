@@ -11,6 +11,7 @@
 	import colonFenceExtension from '$lib/utils/marked/colon-fence-extension';
 
 	import MarkdownTokens from './Markdown/MarkdownTokens.svelte';
+	import FilterMetadataBlock from './Markdown/FilterMetadataBlock.svelte';
 	import footnoteExtension from '$lib/utils/marked/footnote-extension';
 	import citationExtension from '$lib/utils/marked/citation-extension';
 
@@ -27,6 +28,7 @@
 
 	export let sourceIds = [];
 	export let polaproCitations = [];
+	export let filterMetadata = null;
 
 	export let onSave = () => {};
 	export let onUpdate = () => {};
@@ -112,4 +114,7 @@
 		{onUpdate}
 		{onPreview}
 	/>
+	{#if filterMetadata}
+		<FilterMetadataBlock {filterMetadata} />
+	{/if}
 {/key}
