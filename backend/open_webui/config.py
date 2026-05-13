@@ -1180,32 +1180,60 @@ except Exception as e:
 if default_prompt_suggestions == []:
     default_prompt_suggestions = [
         {
-            'title': ['Positionen der Parteien', 'zu Energie und Klima'],
-            'content': "Wie positionieren sich die verschiedenen Parteien zum Thema erneuerbare Energien und Klimaschutz?",
+            'title': ['Scholz Zeitenwende-Rede', 'Sondervermögen Bundeswehr'],
+            'content': "Was genau hat Bundeskanzler Olaf Scholz in seiner Zeitenwende-Rede am 27. Februar 2022 über das Sondervermögen für die Bundeswehr gesagt?",
         },
         {
-            'title': ['Hauptargumente', 'zum Bundeshaushalt'],
-            'content': "Was waren die Hauptargumente von Lars Klingbeil in der letzten Debatte zum Bundeshaushalt?",
+            'title': ['SPD Waffenlieferungen', 'Positionswandel 2022–2024'],
+            'content': "Wie hat sich die Position der SPD zur Lieferung schwerer Waffen an die Ukraine zwischen Februar 2022 und Dezember 2024 verändert? Belege dies anhand konkreter Bundestagsreden.",
         },
         {
-            'title': ['Inhaltliche Unterschiede', 'in der Migrationspolitik'],
-            'content': "Was sind die größten inhaltlichen Unterschiede zwischen den Parteien CDU und die Linke bezüglich der Migrationspolitik?",
+            'title': ['Heizungsgesetz', 'Argumente aller Fraktionen'],
+            'content': "Welche unterschiedlichen Argumente haben CDU/CSU, SPD, Grüne, FDP, AfD und Linke in der Debatte zum Gebäudeenergiegesetz (Heizungsgesetz) im Jahr 2023 vorgebracht?",
         },
         {
-            'title': ['Zusammenfassung', 'der letzten Plenarsitzung'],
-            'content': "Fasse die wichtigsten Aussagen und Beschlüsse der letzten Plenarsitzung für mich zusammen.",
+            'title': ['Quantencomputing-Regulierung', 'Out-of-Distribution-Frage'],
+            'content': "Was hat der Bundestag in der 19. und 20. Legislaturperiode über die Regulierung von Quantencomputing beschlossen?",
         },
         {
-            'title': ['Gegenargumente', 'zum Gebäudeenergiegesetz'],
-            'content': "Welche Gegenargumente wurden am häufigsten gegen das vorgeschlagene Gebäudeenergiegesetz vorgebracht?",
+            'title': ['Impfpflicht-Debatte', 'Innerfraktionelle Abweichungen'],
+            'content': "Gab es innerhalb der Ampel-Koalition abweichende Positionen zur allgemeinen Impfpflicht? Wie haben einzelne Abgeordnete von SPD, Grünen und FDP in der Debatte im April 2022 abgestimmt und argumentiert?",
         },
         {
-            'title': ['Politischer Diskurs', 'zur Digitalisierung'],
-            'content': "Wie hat sich der politische Diskurs zum Thema 'Digitalisierung der Verwaltung' über die letzten zwei Jahre entwickelt?",
+            'title': ['Schuldenbremse', 'Häufigkeit und Fraktionen'],
+            'content': "Wie häufig wurde das Thema 'Schuldenbremse' im Bundestag in der 20. Legislaturperiode debattiert, und welche Fraktion hat es am häufigsten aufgegriffen?",
         },
         {
-            'title': ['Gesetzesentwürfe', 'zur Wirtschaftsförderung'],
-            'content': "Welche Gesetzesentwürfe zur Förderung der Wirtschaft wurden in diesem Jahr verabschiedet?",
+            'title': ['Vertrauensfrage Scholz', 'Stimmung und Ton der Debatte'],
+            'content': "Wie war die Stimmung und der Ton in der Bundestagsdebatte am Tag der Vertrauensfrage von Olaf Scholz im Dezember 2024? War die Debatte sachlich oder emotional aufgeladen?",
+        },
+        {
+            'title': ['Cannabis-Legalisierung', 'Gründe für die Verzögerung'],
+            'content': "Warum wurde die Cannabis-Legalisierung trotz Ampel-Mehrheit erst im Februar 2024 und nicht früher verabschiedet?",
+        },
+        {
+            'title': ['Wahlrechtsreform 2023', 'Verfahren und Verfassungsbedenken'],
+            'content': "Wie wurde die Wahlrechtsreform 2023 der Ampel-Koalition im Bundestag parlamentarisch behandelt, und welche verfassungsrechtlichen Einwände wurden in der Debatte vorgebracht?",
+        },
+        {
+            'title': ['Migrationspolitik', '19. vs. 20. Legislaturperiode'],
+            'content': "Vergleiche die migrationspolitischen Debatten der 19. Legislaturperiode (Große Koalition) mit denen der 20. Legislaturperiode (Ampel-Koalition). Welche neuen Argumente und Akteure sind hinzugekommen?",
+        },
+        {
+            'title': ['Friedrich Merz', 'Zentrale Themen und Positionen'],
+            'content': "Was waren die zentralen Themen und Positionen von Friedrich Merz in seinen Bundestagsreden während der 20. Legislaturperiode?",
+        },
+        {
+            'title': ['Ampel-Koalition', 'Was lief schief?'],
+            'content': "Was lief schief bei der Ampel-Koalition?",
+        },
+        {
+            'title': ['Infektionsschutzgesetz', '§ 28a IfSG und Grundrechte'],
+            'content': "Welche konkreten Änderungen am Infektionsschutzgesetz (IfSG) wurden in der 19. Legislaturperiode im Kontext der COVID-19-Pandemie debattiert, insbesondere bezüglich des § 28a IfSG und den damit verbundenen Grundrechtseinschränkungen?",
+        },
+        {
+            'title': ['AfD-Verbotsverfahren', 'Contra-Argumente im Bundestag'],
+            'content': "Welche Argumente haben Abgeordnete im Bundestag gegen ein mögliches AfD-Verbotsverfahren vorgebracht, und aus welchen Fraktionen kamen diese Gegenargumente?",
         },
     ]
 
