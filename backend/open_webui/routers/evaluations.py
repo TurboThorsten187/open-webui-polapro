@@ -366,6 +366,24 @@ async def create_feedback(
             detail=ERROR_MESSAGES.DEFAULT(),
         )
 
+    # Forward feedback to the host-based RAG interface for centralized logging
+    try:
+        import aiohttp
+        async with aiohttp.ClientSession() as session:
+            payload = {
+                "message_id": form_data.meta.message_id if (form_data.meta and hasattr(form_data.meta, "message_id")) else (form_data.meta.get("message_id") if isinstance(form_data.meta, dict) else None),
+                "chat_id": form_data.meta.chat_id if (form_data.meta and hasattr(form_data.meta, "chat_id")) else (form_data.meta.get("chat_id") if isinstance(form_data.meta, dict) else None),
+                "rating": form_data.data.rating if form_data.data else None,
+                "comment": form_data.data.comment if form_data.data else None,
+                "reason": form_data.data.reason if form_data.data else None,
+            }
+            # RAG interface is running on host port 8000 (accessible via host.docker.internal in container)
+            async with session.post("http://host.docker.internal:8000/v1/feedback", json=payload, timeout=5) as resp:
+                if resp.status >= 400:
+                    log.error(f"RAG feedback API returned status: {resp.status}")
+    except Exception as e:
+        log.error(f"Failed to forward feedback to RAG: {e}")
+
     return feedback
 
 
@@ -397,6 +415,24 @@ async def update_feedback_by_id(
     if not feedback:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
+    # Forward updated feedback to the host-based RAG interface for centralized logging
+    try:
+        import aiohttp
+        async with aiohttp.ClientSession() as session:
+            payload = {
+                "message_id": form_data.meta.message_id if (form_data.meta and hasattr(form_data.meta, "message_id")) else (form_data.meta.get("message_id") if isinstance(form_data.meta, dict) else None),
+                "chat_id": form_data.meta.chat_id if (form_data.meta and hasattr(form_data.meta, "chat_id")) else (form_data.meta.get("chat_id") if isinstance(form_data.meta, dict) else None),
+                "rating": form_data.data.rating if form_data.data else None,
+                "comment": form_data.data.comment if form_data.data else None,
+                "reason": form_data.data.reason if form_data.data else None,
+            }
+            # RAG interface is running on host port 8000 (accessible via host.docker.internal in container)
+            async with session.post("http://host.docker.internal:8000/v1/feedback", json=payload, timeout=5) as resp:
+                if resp.status >= 400:
+                    log.error(f"RAG feedback API returned status: {resp.status}")
+    except Exception as e:
+        log.error(f"Failed to forward feedback to RAG: {e}")
+
     return feedback
 
 
@@ -411,3 +447,52 @@ async def delete_feedback_by_id(id: str, user=Depends(get_verified_user), db: Se
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ERROR_MESSAGES.NOT_FOUND)
 
     return success
+
+
+class QuestionnaireForm(BaseModel):
+    responses: dict
+    user_agent: Optional[str] = None
+
+
+@router.post('/questionnaire')
+async def submit_questionnaire(
+    form_data: QuestionnaireForm,
+    request: Request,
+    user=Depends(get_verified_user),
+):
+    """
+    Receives a questionnaire submission from the frontend and forwards it
+    to the host-based RAG interface for centralized logging.
+    """
+    payload = {
+        "user_id": user.id,
+        "user_email": user.email,
+        "user_name": user.name,
+        "user_role": user.role,
+        "responses": form_data.responses,
+        "user_agent": form_data.user_agent,
+    }
+
+    try:
+        import aiohttp
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                "http://host.docker.internal:8000/v1/questionnaire",
+                json=payload,
+                timeout=5,
+            ) as resp:
+                if resp.status >= 400:
+                    log.error(f"RAG questionnaire API returned status: {resp.status}")
+                    raise HTTPException(
+                        status_code=status.HTTP_502_BAD_GATEWAY,
+                        detail="Failed to forward questionnaire to RAG backend.",
+                    )
+                result = await resp.json()
+    except aiohttp.ClientError as e:
+        log.error(f"Failed to forward questionnaire to RAG: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Failed to connect to RAG backend: {e}",
+        )
+
+    return result

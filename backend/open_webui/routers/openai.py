@@ -1128,6 +1128,15 @@ async def generate_chat_completion(
 
     headers, cookies = await get_headers_and_cookies(request, url, key, api_config, metadata, user=user)
 
+    # Inject custom metadata headers for RAG interface logging
+    if user:
+        headers["X-OpenWebUI-User-Email"] = getattr(user, "email", "")
+        headers["X-OpenWebUI-User-Name"] = getattr(user, "name", "")
+        headers["X-OpenWebUI-User-Id"] = getattr(user, "id", "")
+    if metadata:
+        headers["X-OpenWebUI-Chat-Id"] = metadata.get("chat_id", "")
+        headers["X-OpenWebUI-Message-Id"] = metadata.get("message_id", "")
+
     is_responses = api_config.get('api_type') == 'responses'
 
     if api_config.get('azure', False):

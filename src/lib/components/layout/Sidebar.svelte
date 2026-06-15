@@ -66,6 +66,7 @@
 	import Note from '../icons/Note.svelte';
 	import { slide } from 'svelte/transition';
 	import HotkeyHint from '../common/HotkeyHint.svelte';
+	import SurveyModal from './SurveyModal.svelte';
 
 	const BREAKPOINT = 768;
 
@@ -82,6 +83,7 @@
 	let allChatsLoaded = false;
 
 	let showCreateFolderModal = false;
+	let showSurveyModal = false;
 
 	let pinnedModels = [];
 
@@ -648,6 +650,8 @@
 	}}
 />
 
+<SurveyModal bind:show={showSurveyModal} />
+
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 
 {#if $showSidebar}
@@ -762,6 +766,27 @@
 						>
 							<div class=" self-center flex items-center justify-center size-9">
 								<Search className="size-4.5" />
+							</div>
+						</button>
+					</Tooltip>
+				</div>
+
+				<div>
+					<Tooltip content="Feedback-Fragebogen" placement="right">
+						<button
+							class=" cursor-pointer flex rounded-xl hover:bg-gray-100 dark:hover:bg-gray-850 transition group"
+							on:click={(e) => {
+								e.stopImmediatePropagation();
+								e.preventDefault();
+								showSurveyModal = true;
+							}}
+							draggable="false"
+							aria-label="Feedback-Fragebogen"
+						>
+							<div class=" self-center flex items-center justify-center size-9">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4.5">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15a2.25 2.25 0 0 1 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+								</svg>
 							</div>
 						</button>
 					</Tooltip>
@@ -998,6 +1023,28 @@
 								<div class=" self-center text-sm font-primary">{$i18n.t('Search')}</div>
 							</div>
 							<HotkeyHint name="search" className=" group-hover:visible invisible" />
+						</button>
+					</div>
+
+					<div class="px-[0.4375rem] flex justify-center text-gray-800 dark:text-gray-200">
+						<button
+							id="sidebar-survey-button"
+							class="group grow flex items-center space-x-3 rounded-2xl px-2.5 py-2 hover:bg-gray-100 dark:hover:bg-gray-900 transition outline-none"
+							on:click={() => {
+								showSurveyModal = true;
+							}}
+							draggable="false"
+							aria-label="Feedback-Fragebogen"
+						>
+							<div class="self-center">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4.5">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15a2.25 2.25 0 0 1 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+								</svg>
+							</div>
+
+							<div class="flex flex-1 self-center translate-y-[0.5px]">
+								<div class=" self-center text-sm font-primary">Feedback</div>
+							</div>
 						</button>
 					</div>
 
