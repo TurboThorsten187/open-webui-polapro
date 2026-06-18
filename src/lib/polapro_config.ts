@@ -11,6 +11,9 @@ export const polaproConfig = {
     // Wenn 'false' gesetzt, wird der 'About' Tab in den Einstellungen ausgeblendet
     showAboutTab: false,
 
+    // Wenn 'false' gesetzt, wird der Workspace-Button in der Sidebar ausgeblendet
+    showWorkspace: false,
+
     // Wenn 'false' gesetzt, wird der 'Integrations' Tab in den Chat-Einstellungen ausgeblendet
     showChatIntegrationsTab: false,
 

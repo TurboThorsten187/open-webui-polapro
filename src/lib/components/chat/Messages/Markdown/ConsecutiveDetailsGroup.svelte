@@ -68,6 +68,19 @@
 	})();
 
 	$: prefixText = hasPending ? $i18n.t('Exploring') : $i18n.t('Explored');
+
+	$: latestReasoningStatus = (() => {
+		const reasoningTokens = tokens.filter((t) => t?.attributes?.type === 'reasoning' && t.text);
+		if (reasoningTokens.length === 0) return '';
+		const lastToken = reasoningTokens[reasoningTokens.length - 1];
+		if (!lastToken || !lastToken.text) return '';
+		const lines = lastToken.text.split('\n')
+			.map(line => line.trim())
+			.filter(line => line.length > 0);
+		if (lines.length === 0) return '';
+		const lastLine = lines[lines.length - 1];
+		return lastLine.replace(/^[•\-\*\s]+/, '').replace(/^>\s*/, '').trim();
+	})();
 </script>
 
 <div {id} class="w-full">
@@ -97,12 +110,15 @@
 			{/if}
 
 			<!-- Summary text -->
-			<div class="flex-1 line-clamp-1">
+			<div class="flex-1 flex items-center gap-1.5 flex-wrap line-clamp-1">
 				<span class="text-gray-600 dark:text-gray-300 {hasPending ? 'shimmer' : ''}"
 					>{prefixText}</span
 				>
 				{#if summaryText}
 					<span class="text-gray-400 dark:text-gray-500">{summaryText}</span>
+				{/if}
+				{#if latestReasoningStatus}
+					<span class="text-gray-400 dark:text-gray-500 text-xs font-normal">({latestReasoningStatus})</span>
 				{/if}
 			</div>
 

@@ -52,10 +52,21 @@
 	export let disabled = false;
 	export let messageDone = false;
 	export let hide = false;
+	export let content = '';
 
 	export let onChange: Function = () => {};
 
 	$: onChange(open);
+
+	$: latestReasoningStatus = (() => {
+		if (!content) return '';
+		const lines = content.split('\n')
+			.map(line => line.trim())
+			.filter(line => line.length > 0);
+		if (lines.length === 0) return '';
+		const lastLine = lines[lines.length - 1];
+		return lastLine.replace(/^[•\-\*\s]+/, '').replace(/^>\s*/, '').trim();
+	})();
 
 	const collapsibleId = uuidv4();
 </script>
@@ -86,24 +97,29 @@
 					</div>
 				{/if}
 
-				<div class="">
+				<div class="flex items-center gap-1.5 flex-wrap">
 					{#if attributes?.type === 'reasoning'}
-						{#if (attributes?.done === 'true' || messageDone) && attributes?.duration}
-							{#if attributes.duration < 1}
-								{$i18n.t('Thought for less than a second')}
-							{:else if attributes.duration < 60}
-								{$i18n.t('Thought for {{DURATION}} seconds', {
-									DURATION: attributes.duration
-								})}
+						<span class="text-gray-600 dark:text-gray-300">
+							{#if (attributes?.done === 'true' || messageDone) && attributes?.duration}
+								{#if attributes.duration < 1}
+									{$i18n.t('Thought for less than a second')}
+								{:else if attributes.duration < 60}
+									{$i18n.t('Thought for {{DURATION}} seconds', {
+										DURATION: attributes.duration
+									})}
+								{:else}
+									{$i18n.t('Thought for {{DURATION}}', {
+										DURATION: dayjs.duration(attributes.duration, 'seconds').humanize()
+									})}
+								{/if}
+							{:else if attributes?.done === 'true' || messageDone}
+								{$i18n.t('Thought')}
 							{:else}
-								{$i18n.t('Thought for {{DURATION}}', {
-									DURATION: dayjs.duration(attributes.duration, 'seconds').humanize()
-								})}
+								{$i18n.t('Thinking...')}
 							{/if}
-						{:else if attributes?.done === 'true' || messageDone}
-							{$i18n.t('Thought')}
-						{:else}
-							{$i18n.t('Thinking...')}
+						</span>
+						{#if latestReasoningStatus}
+							<span class="text-gray-400 dark:text-gray-500 text-xs font-normal">({latestReasoningStatus})</span>
 						{/if}
 					{:else if attributes?.type === 'code_interpreter'}
 						{#if attributes?.done === 'true' || messageDone}

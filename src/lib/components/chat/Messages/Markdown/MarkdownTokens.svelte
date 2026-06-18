@@ -397,6 +397,7 @@
 							open={$settings?.expandDetails ?? false}
 							attributes={detailToken?.attributes}
 							messageDone={done}
+							content={textContent}
 							className="w-full space-y-1"
 							dir="auto"
 						>
@@ -445,6 +446,7 @@
 				open={$settings?.expandDetails ?? false}
 				attributes={token?.attributes}
 				messageDone={done}
+				content={textContent}
 				className="w-full space-y-1"
 				dir="auto"
 			>

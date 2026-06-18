@@ -2847,6 +2847,47 @@ async def get_system_oauth_token(request, user):
     return oauth_token
 
 
+def parse_follow_ups(content: str) -> list[str]:
+    # Remove thinking tags
+    content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL).strip()
+
+    # Extract JSON block
+    start_idx = content.find('{')
+    end_idx = content.rfind('}')
+    if start_idx == -1 or end_idx == -1:
+        return []
+    json_str = content[start_idx : end_idx + 1]
+
+    try:
+        # Attempt 1: Direct JSON load
+        result = json.loads(json_str)
+        if isinstance(result, dict) and 'follow_ups' in result:
+            return result['follow_ups']
+    except Exception:
+        pass
+
+    try:
+        # Attempt 2: Clean common quote issues (e.g. single quotes as delimiters, leaving contractions untouched)
+        cleaned_str = re.sub(r"(?<=[\{\[\s,:]|^)'|'(?=[\}\]\s,:]|$)", '"', json_str)
+        result = json.loads(cleaned_str)
+        if isinstance(result, dict) and 'follow_ups' in result:
+            return result['follow_ups']
+    except Exception:
+        pass
+
+    try:
+        # Attempt 3: Safe ast.literal_eval if it is structured like a Python dict/list
+        import ast
+
+        result = ast.literal_eval(json_str)
+        if isinstance(result, dict) and 'follow_ups' in result:
+            return result['follow_ups']
+    except Exception:
+        pass
+
+    return []
+
+
 async def background_tasks_handler(ctx):
     request = ctx['request']
     form_data = ctx['form_data']
@@ -2923,12 +2964,8 @@ async def background_tasks_handler(ctx):
                     else:
                         follow_ups_string = ''
 
-                    follow_ups_string = follow_ups_string[
-                        follow_ups_string.find('{') : follow_ups_string.rfind('}') + 1
-                    ]
-
                     try:
-                        follow_ups = json.loads(follow_ups_string).get('follow_ups', [])
+                        follow_ups = parse_follow_ups(follow_ups_string)
                         await event_emitter(
                             {
                                 'type': 'chat:message:follow_ups',
