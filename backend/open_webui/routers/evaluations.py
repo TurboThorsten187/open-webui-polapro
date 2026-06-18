@@ -370,12 +370,17 @@ async def create_feedback(
     try:
         import aiohttp
         async with aiohttp.ClientSession() as session:
+            data_dict = form_data.data.model_dump() if form_data.data else {}
+            details = data_dict.get("details") or {}
+            detailed_rating = details.get("rating") if isinstance(details, dict) else None
+
             payload = {
                 "message_id": form_data.meta.message_id if (form_data.meta and hasattr(form_data.meta, "message_id")) else (form_data.meta.get("message_id") if isinstance(form_data.meta, dict) else None),
                 "chat_id": form_data.meta.chat_id if (form_data.meta and hasattr(form_data.meta, "chat_id")) else (form_data.meta.get("chat_id") if isinstance(form_data.meta, dict) else None),
                 "rating": form_data.data.rating if form_data.data else None,
                 "comment": form_data.data.comment if form_data.data else None,
                 "reason": form_data.data.reason if form_data.data else None,
+                "detailed_rating": detailed_rating,
             }
             # RAG interface is running on host port 8000 (accessible via host.docker.internal in container)
             async with session.post("http://host.docker.internal:8000/v1/feedback", json=payload, timeout=5) as resp:
@@ -419,12 +424,17 @@ async def update_feedback_by_id(
     try:
         import aiohttp
         async with aiohttp.ClientSession() as session:
+            data_dict = form_data.data.model_dump() if form_data.data else {}
+            details = data_dict.get("details") or {}
+            detailed_rating = details.get("rating") if isinstance(details, dict) else None
+
             payload = {
                 "message_id": form_data.meta.message_id if (form_data.meta and hasattr(form_data.meta, "message_id")) else (form_data.meta.get("message_id") if isinstance(form_data.meta, dict) else None),
                 "chat_id": form_data.meta.chat_id if (form_data.meta and hasattr(form_data.meta, "chat_id")) else (form_data.meta.get("chat_id") if isinstance(form_data.meta, dict) else None),
                 "rating": form_data.data.rating if form_data.data else None,
                 "comment": form_data.data.comment if form_data.data else None,
                 "reason": form_data.data.reason if form_data.data else None,
+                "detailed_rating": detailed_rating,
             }
             # RAG interface is running on host port 8000 (accessible via host.docker.internal in container)
             async with session.post("http://host.docker.internal:8000/v1/feedback", json=payload, timeout=5) as resp:

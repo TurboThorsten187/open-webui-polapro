@@ -2091,6 +2091,13 @@ class="bg-transparent hover:bg-gray-100 text-gray-700 dark:text-white dark:hover
 							</div>
 						</div>
 
+
+						{#if $config?.dataset_freshness}
+							<div class="text-xs text-gray-400 dark:text-gray-500 text-center mt-0.5">
+								Datenstand: {$config.dataset_freshness}
+							</div>
+						{/if}
+
 						{#if $config?.license_metadata?.input_footer}
 							<div class=" text-xs text-gray-500 text-center line-clamp-1 marked">
 								{@html DOMPurify.sanitize(marked($config?.license_metadata?.input_footer))}

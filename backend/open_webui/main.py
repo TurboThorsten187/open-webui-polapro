@@ -2005,6 +2005,43 @@ async def list_tasks_by_chat_id_endpoint(request: Request, chat_id: str, user=De
 ##################################
 
 
+# ---- PoLaPro: Dataset Freshness Cache ----
+_dataset_freshness_cache = {'value': None, 'timestamp': 0}
+_DATASET_FRESHNESS_TTL = 60  # seconds
+
+def _get_dataset_freshness() -> str:
+    """
+    Fetch the dataset freshness date from the RAG server.
+    Uses a simple TTL cache (60s) to avoid hitting the RAG server on every page load.
+    The RAG server itself only computes the value once at startup.
+    """
+    now = time.time()
+    if _dataset_freshness_cache['value'] is not None and (now - _dataset_freshness_cache['timestamp']) < _DATASET_FRESHNESS_TTL:
+        return _dataset_freshness_cache['value']
+
+    try:
+        rag_base_urls = app.state.config.OPENAI_API_BASE_URLS
+        if isinstance(rag_base_urls, list) and len(rag_base_urls) > 0:
+            rag_base_url = rag_base_urls[0]
+        else:
+            rag_base_url = str(rag_base_urls)
+
+        # Strip trailing /v1 if present to get the server root
+        rag_server_url = rag_base_url.rstrip('/').removesuffix('/v1')
+        url = f'{rag_server_url}/v1/dataset/freshness'
+
+        response = requests.get(url, timeout=1.0)
+        if response.status_code == 200:
+            freshness = response.json().get('freshness', 'Unbekannt')
+            _dataset_freshness_cache['value'] = freshness
+            _dataset_freshness_cache['timestamp'] = now
+            return freshness
+    except Exception as e:
+        log.debug(f'Failed to fetch dataset freshness from RAG server: {e}')
+
+    return _dataset_freshness_cache.get('value') or 'Unbekannt'
+
+
 @app.get('/api/config')
 async def get_app_config(request: Request):
     user = None
@@ -2136,6 +2173,7 @@ async def get_app_config(request: Request):
                     'response_watermark': app.state.config.RESPONSE_WATERMARK,
                 },
                 'license_metadata': app.state.LICENSE_METADATA,
+                'dataset_freshness': _get_dataset_freshness(),
                 **(
                     {
                         'active_entries': app.state.USER_COUNT,
