@@ -1,4 +1,4 @@
-﻿$sourceSvg = "source_logo.svg"
+$sourceSvg = "source_logo.svg"
 $outDir = "output"
 
 if (-not (Test-Path $sourceSvg)) {
@@ -13,9 +13,9 @@ if (-not (Test-Path $outDir)) {
 Write-Host "Generiere Bilder mit extra Padding im Ordner '$outDir'..." -ForegroundColor Cyan
 
 # 1. Padded transparent logo (Basis-Ebene)
-# Bild auf 250x250 verkleinern (für deutlich größere Ränder) 
+# Bild auf 350x350 vergrößern (für ausgewogene Ränder) 
 # und zentriert in 512x512 transparent einfügen
-magick convert -background none $sourceSvg -resize 250x250 -gravity center -extent 512x512 padded_logo.png
+magick convert -background none $sourceSvg -resize 350x350 -gravity center -extent 512x512 padded_logo.png
 
 # Farbumgekehrte Version des Logos für den Dark Mode herstellen (Schwarz wird Weiß, Alpha bleibt)
 magick convert padded_logo.png -channel RGB -negate padded_logo_white.png
