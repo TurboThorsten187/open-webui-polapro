@@ -3,7 +3,6 @@
 
 	import { createEventDispatcher, onMount, getContext } from 'svelte';
 	import { config, models, tags as _tags } from '$lib/stores';
-	import Tags from '$lib/components/common/Tags.svelte';
 	import XMark from '$lib/components/icons/XMark.svelte';
 	import ChevronRight from '$lib/components/icons/ChevronRight.svelte';
 
@@ -30,7 +29,6 @@
 		'not_factually_correct',
 		'didnt_fully_follow_instructions',
 		'refused_when_it_shouldnt_have',
-		'being_lazy',
 		'other'
 	];
 
@@ -56,6 +54,13 @@
 	const init = () => {
 		if (!selectedReason) {
 			selectedReason = message?.annotation?.reason ?? '';
+			if (!selectedReason) {
+				if (message?.annotation?.rating === -1) {
+					selectedReason = 'not_helpful';
+				} else if (message?.annotation?.rating === 1) {
+					selectedReason = 'accurate_information';
+				}
+			}
 		}
 
 		if (!comment) {
@@ -202,8 +207,6 @@
 							{$i18n.t("Didn't fully follow instructions")}
 						{:else if reason === 'refused_when_it_shouldnt_have'}
 							{$i18n.t("Refused when it shouldn't have")}
-						{:else if reason === 'being_lazy'}
-							{$i18n.t('Being lazy')}
 						{:else if reason === 'other'}
 							{$i18n.t('Other')}
 						{:else}
@@ -225,24 +228,7 @@
 		/>
 	</div>
 
-	<div class="mt-2 gap-1.5 flex justify-between">
-		<div class="flex items-end group">
-			<Tags
-				{tags}
-				suggestionTags={$_tags ?? []}
-				on:delete={(e) => {
-					tags = tags.filter(
-						(tag) =>
-							tag.name.replaceAll(' ', '_').toLowerCase() !==
-							e.detail.replaceAll(' ', '_').toLowerCase()
-					);
-				}}
-				on:add={(e) => {
-					tags = [...tags, { name: e.detail }];
-				}}
-			/>
-		</div>
-
+	<div class="mt-2 gap-1.5 flex justify-end">
 		<button
 			class="px-3.5 py-1.5 text-sm font-medium bg-black hover:bg-gray-900 text-white dark:bg-white dark:text-black dark:hover:bg-gray-100 transition rounded-full"
 			on:click={() => {

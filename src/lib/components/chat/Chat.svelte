@@ -46,7 +46,8 @@
 		selectedTerminalId,
 		showFileNavPath,
 		showFileNavDir,
-		chatRequestQueues
+		chatRequestQueues,
+		activeCitation
 	} from '$lib/stores';
 
 	import { WEBUI_API_BASE_URL } from '$lib/constants';
@@ -96,6 +97,7 @@
 	import Banner from '../common/Banner.svelte';
 	import MessageInput from '$lib/components/chat/MessageInput.svelte';
 	import Messages from '$lib/components/chat/Messages.svelte';
+	import CitationOverlay from './Messages/Citations/CitationOverlay.svelte';
 	import Navbar from '$lib/components/chat/Navbar.svelte';
 	import ChatControls from './ChatControls.svelte';
 	import EventConfirmDialog from '../common/ConfirmDialog.svelte';
@@ -181,6 +183,7 @@
 
 		prompt = '';
 		messageInput?.setText('');
+		activeCitation.set(null);
 
 		files = [];
 		selectedToolIds = [];
@@ -772,6 +775,7 @@
 				$socket?.off('events', chatEventHandler);
 				audioQueueInstance?.destroy();
 				audioQueue.set(null);
+				activeCitation.set(null);
 			} catch (e) {
 				console.error(e);
 			}
@@ -2805,7 +2809,7 @@
 						}}
 					/>
 
-					<div id="chat-pane" class="flex flex-col flex-auto z-10 w-full @container overflow-auto">
+					<div id="chat-pane" class="flex flex-col flex-auto z-10 w-full @container overflow-auto relative">
 						{#if ($settings?.landingPageMode === 'chat' && !$selectedFolder) || createMessagesList(history, history.currentId).length > 0}
 							<div
 								class=" pb-2.5 flex flex-col justify-between w-full flex-auto overflow-auto h-0 max-w-full z-10 scrollbar-hidden"
@@ -2974,6 +2978,7 @@
 								/>
 							</div>
 						{/if}
+						<CitationOverlay />
 					</div>
 				</Pane>
 

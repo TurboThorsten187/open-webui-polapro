@@ -109,6 +109,7 @@ export const artifactCode = writable(null);
 export const artifactContents = writable(null);
 
 export const embed = writable(null);
+export const activeCitation = writable<any>(null);
 
 export const temporaryChatEnabled = writable(false);
 export const scrollPaginationEnabled = writable(false);

@@ -35,6 +35,18 @@ export const polaproConfig = {
     // Wenn 'false' gesetzt, wird der initiale Begrüßungstext ("Explore the cosmos" etc.) vor der ersten Nachricht ausgeblendet
     showChatOnboarding: true,
 
+    // Wenn 'false' gesetzt, wird der Edit-Button bei Chat-Antworten ausgeblendet
+    showEditMessage: false,
+
+    // Wenn 'false' gesetzt, wird der Copy-Button bei Chat-Antworten ausgeblendet
+    showCopyMessage: false,
+
+    // Wenn 'false' gesetzt, wird der 'Vorlesen' (Read Aloud) Button bei Chat-Antworten ausgeblendet
+    showReadAloudMessage: false,
+
+    // Wenn 'false' gesetzt, wird der 'Antwort fortsetzen' (Continue Response) Button ausgeblendet
+    showContinueResponseMessage: false,
+
     // --- Metadaten Feature ---
     // Hauptschalter für das Metadaten-Menü neben dem Plus-Button
     showMetadataMenu: true,

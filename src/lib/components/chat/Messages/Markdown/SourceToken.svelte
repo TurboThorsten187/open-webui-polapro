@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { tick } from 'svelte';
 	import { LinkPreview } from 'bits-ui';
 	import { decodeString } from '$lib/utils';
 	import Source from './Source.svelte';
 	import type { PolaProCitation } from '$lib/utils/citation-utils';
+	import { activeCitation } from '$lib/stores';
 
 	export let id;
 	export let token;
@@ -11,11 +11,7 @@
 	export let polaproCitations: PolaProCitation[] = [];
 	export let onClick: Function = () => {};
 
-	let showPopover = false;
-	let popoverElement: HTMLDivElement;
-	let triggerElement: HTMLButtonElement;
 	let openPreview = false;
-	let flipBelow = false;
 
 	// Resolve citation data for this token
 	$: citationId = token?.ids?.[0] ?? null;
@@ -24,36 +20,10 @@
 		: null;
 	$: hasPolaProData = citation !== null && citation !== undefined;
 
-	async function togglePopover() {
-		showPopover = !showPopover;
-		if (showPopover && triggerElement) {
-			// Wait for the popover to render, then check if it fits above
-			await tick();
-			const triggerRect = triggerElement.getBoundingClientRect();
-			// Popover height is ~400px max, need at least that much space above
-			const spaceAbove = triggerRect.top;
-			const popoverHeight = popoverElement?.offsetHeight ?? 400;
-			flipBelow = spaceAbove < popoverHeight + 8;
+	function showCitation() {
+		if (citation) {
+			activeCitation.set(citation);
 		}
-	}
-
-	function closePopover() {
-		showPopover = false;
-	}
-
-	function handleClickOutside(event: MouseEvent) {
-		if (
-			popoverElement &&
-			!popoverElement.contains(event.target as Node) &&
-			triggerElement &&
-			!triggerElement.contains(event.target as Node)
-		) {
-			closePopover();
-		}
-	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') closePopover();
 	}
 
 	// --- Fallback helpers (unchanged from original) ---
@@ -81,95 +51,15 @@
 	};
 </script>
 
-<svelte:window on:click={handleClickOutside} on:keydown={handleKeydown} />
-
 {#if hasPolaProData && citation}
-	<!-- ═══════════════════════════════════════════════════════════════
-	     PoLaPro NotebookLM-style citation popover
-	     ═══════════════════════════════════════════════════════════════ -->
 	<span class="polacite-wrapper">
 		<button
-			bind:this={triggerElement}
 			class="polacite-trigger"
-			on:click|stopPropagation={togglePopover}
+			on:click|stopPropagation={showCitation}
 			aria-label="Quelle {citation.id} anzeigen"
 		>
 			[{citation.id}]
 		</button>
-
-		{#if showPopover}
-			<div
-				bind:this={popoverElement}
-				class="polacite-popover"
-				class:polacite-below={flipBelow}
-				on:click|stopPropagation
-			>
-				<!-- Header -->
-				<div class="polacite-header">
-					<div class="polacite-header-left">
-						<span class="polacite-badge">{citation.id}</span>
-						<span class="polacite-speaker">{citation.speaker}</span>
-						{#if citation.party && citation.party !== 'N/A'}
-							<span class="polacite-party">({citation.party})</span>
-						{/if}
-					</div>
-					<button
-						class="polacite-close"
-						on:click|stopPropagation={closePopover}
-						aria-label="Schließen"
-					>
-						<svg class="polacite-close-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-								d="M6 18L18 6M6 6l12 12" />
-						</svg>
-					</button>
-				</div>
-
-				<!-- Metadata row -->
-				<div class="polacite-meta">
-					{#if citation.date && citation.date !== 'N/A'}
-						<span>📅 {citation.date}</span>
-					{/if}
-					{#if citation.term && citation.term !== 'N/A'}
-						<span>🏛️ WP {citation.term}</span>
-					{/if}
-					{#if citation.session && citation.session !== 'N/A'}
-						<span>📋 Sitzung {citation.session}</span>
-					{/if}
-					{#if citation.speech_id && citation.speech_id !== 'N/A'}
-						<span>🆔 Rede {citation.speech_id}</span>
-					{/if}
-					{#if citation.score !== null && citation.score !== undefined}
-						<span class="polacite-score">Score: {citation.score}</span>
-					{/if}
-				</div>
-
-				<!-- Scrollable chunk text -->
-				<div class="polacite-chunk-scroll">
-					<div class="polacite-chunk-text">
-						{citation.chunk}
-					</div>
-				</div>
-
-				<!-- Footer with document link -->
-				{#if citation.doc_url && citation.doc_url !== 'N/A' && citation.doc_url !== ''}
-					<div class="polacite-footer">
-						<a
-							href={citation.doc_url}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="polacite-link"
-						>
-							📄 Quelle anzeigen
-							<svg class="polacite-link-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-									d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-							</svg>
-						</a>
-					</div>
-				{/if}
-			</div>
-		{/if}
 	</span>
 
 {:else if sourceIds}

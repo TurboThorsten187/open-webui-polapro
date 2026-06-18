@@ -5,7 +5,7 @@
 
 	import Modal from '$lib/components/common/Modal.svelte';
 	import XMark from '$lib/components/icons/XMark.svelte';
-	import CitationModal from './CitationModal.svelte';
+	import { activeCitation } from '$lib/stores';
 
 	export let id = '';
 	export let show = false;
@@ -13,12 +13,8 @@
 	export let showPercentage = false;
 	export let showRelevance = true;
 
-	let showCitationModal = false;
-	let selectedCitation: any = null;
-
 	export const showCitation = (citation) => {
-		selectedCitation = citation;
-		showCitationModal = true;
+		activeCitation.set(citation);
 	};
 
 	const decodeString = (str: string) => {
@@ -29,13 +25,6 @@
 		}
 	};
 </script>
-
-<CitationModal
-	bind:show={showCitationModal}
-	citation={selectedCitation}
-	{showPercentage}
-	{showRelevance}
-/>
 
 <Modal size="lg" bind:show>
 	<div>
@@ -62,8 +51,8 @@
 						id={`source-${id}-${idx + 1}`}
 						class="no-toggle outline-hidden flex dark:text-gray-300 bg-white dark:bg-gray-900 rounded-xl gap-1.5 items-center"
 						on:click={() => {
-							showCitationModal = true;
-							selectedCitation = citation;
+							activeCitation.set(citation);
+							show = false;
 						}}
 					>
 						<div class=" font-medium">
