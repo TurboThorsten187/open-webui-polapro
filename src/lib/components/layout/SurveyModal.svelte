@@ -17,6 +17,8 @@
 	let accuracy = '';
 	let usability = '';
 	let missingFeatures = '';
+	let missingSources = '';
+	let systemErrors = '';
 	let additionalComments = '';
 
 	const satisfactionOptions = [
@@ -48,11 +50,21 @@
 		accuracy = '';
 		usability = '';
 		missingFeatures = '';
+		missingSources = '';
+		systemErrors = '';
 		additionalComments = '';
 	};
 
 	const submitSurvey = async () => {
-		if (!satisfaction && !accuracy && !usability && !missingFeatures && !additionalComments) {
+		if (
+			!satisfaction &&
+			!accuracy &&
+			!usability &&
+			!missingFeatures &&
+			!missingSources &&
+			!systemErrors &&
+			!additionalComments
+		) {
 			toast.error('Bitte beantworten Sie mindestens eine Frage.');
 			return;
 		}
@@ -72,6 +84,8 @@
 						accuracy,
 						usability,
 						missing_features: missingFeatures,
+						missing_sources: missingSources,
+						system_errors: systemErrors,
 						additional_comments: additionalComments
 					},
 					user_agent: navigator.userAgent
@@ -133,7 +147,7 @@
 		</div>
 
 		<!-- Form -->
-		<div class="space-y-5">
+		<div class="space-y-5 max-h-[60vh] overflow-y-auto pr-1.5 scrollbar-thin">
 			<!-- Q1: Satisfaction -->
 			<div>
 				<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -207,7 +221,33 @@
 				></textarea>
 			</div>
 
-			<!-- Q5: Additional Comments -->
+			<!-- Q5: Missing Sources -->
+			<div>
+				<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+					Welche Quellen fehlen Ihrer Meinung nach zur adequaten Beantwortung Ihrer Fragen?
+				</label>
+				<textarea
+					bind:value={missingSources}
+					rows="2"
+					class="w-full px-3 py-2 text-sm rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 resize-none"
+					placeholder="z.B. Protokolle bestimmter Ausschüsse, ältere Debatten, ..."
+				></textarea>
+			</div>
+
+			<!-- Q6: System Errors -->
+			<div>
+				<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+					Welche Fehler macht das System Ihrer Erfahrung nach?
+				</label>
+				<textarea
+					bind:value={systemErrors}
+					rows="2"
+					class="w-full px-3 py-2 text-sm rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 resize-none"
+					placeholder="z.B. verwechselt Redner, erfindet Zitate, filtert falsch, ..."
+				></textarea>
+			</div>
+
+			<!-- Q7: Additional Comments -->
 			<div>
 				<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 					Sonstige Anmerkungen
