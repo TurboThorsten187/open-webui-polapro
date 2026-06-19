@@ -130,46 +130,65 @@
 
 	export let showMetadataMenu = false;
 	export let metadata = {
-		firstName: '',
-		lastName: '',
-		party: '',
-		role: '',
-		electoralTerm: '',
+		speakers: [] as string[],
+		parties: [] as string[],
+		roles: [] as string[],
+		electoralTerms: [] as string[],
 		dateFrom: '',
 		dateTo: '',
-		speechId: ''
+		manifestoParties: [] as string[],
+		manifestoYearFrom: '',
+		manifestoYearTo: '',
+		manifestoThemes: [] as string[]
 	};
 
-		const handleSubmit = () => {
+	const handleSubmit = () => {
 		let finalPrompt = prompt;
 		let metadataStr = '';
 		if (polaproConfig.showMetadataMenu) {
-			let mStr = '<Metadaten>\n';
-			mStr += `Vorname: ${metadata.firstName || 'null'}\n`;
-			mStr += `Nachname: ${metadata.lastName || 'null'}\n`;
-			mStr += `Fraktion/Partei: ${metadata.party || 'null'}\n`;
-			mStr += `Position/Rolle: ${metadata.role || 'null'}\n`;
-			mStr += `Wahlperiode: ${metadata.electoralTerm || 'null'}\n`;
-			mStr += `Datum von: ${metadata.dateFrom || 'null'}\n`;
-			mStr += `Datum bis: ${metadata.dateTo || 'null'}\n`;
-			mStr += `Rede-ID: ${metadata.speechId || 'null'}\n`;
-			mStr += '</Metadaten>\n\n';
-			metadataStr = mStr;
+			const hasActiveFilter = 
+				metadata.speakers.length > 0 ||
+				metadata.parties.length > 0 ||
+				metadata.roles.length > 0 ||
+				metadata.electoralTerms.length > 0 ||
+				metadata.dateFrom ||
+				metadata.dateTo ||
+				metadata.manifestoParties.length > 0 ||
+				metadata.manifestoYearFrom ||
+				metadata.manifestoYearTo ||
+				metadata.manifestoThemes.length > 0;
+
+			if (hasActiveFilter) {
+				let mStr = '<Filter>\n';
+				mStr += `Reden-Namen: ${metadata.speakers.length > 0 ? metadata.speakers.join('; ') : 'null'}\n`;
+				mStr += `Reden-Fraktionen: ${metadata.parties.length > 0 ? metadata.parties.join('; ') : 'null'}\n`;
+				mStr += `Reden-Rollen: ${metadata.roles.length > 0 ? metadata.roles.join('; ') : 'null'}\n`;
+				mStr += `Reden-Wahlperioden: ${metadata.electoralTerms.length > 0 ? metadata.electoralTerms.join('; ') : 'null'}\n`;
+				mStr += `Reden-Datum von: ${metadata.dateFrom || 'null'}\n`;
+				mStr += `Reden-Datum bis: ${metadata.dateTo || 'null'}\n`;
+				mStr += `Wahlprogramme-Parteien: ${metadata.manifestoParties.length > 0 ? metadata.manifestoParties.join('; ') : 'null'}\n`;
+				mStr += `Wahlprogramme-Jahr von: ${metadata.manifestoYearFrom || 'null'}\n`;
+				mStr += `Wahlprogramme-Jahr bis: ${metadata.manifestoYearTo || 'null'}\n`;
+				mStr += `Wahlprogramme-Themen: ${metadata.manifestoThemes.length > 0 ? metadata.manifestoThemes.join('; ') : 'null'}\n`;
+				mStr += '</Filter>\n\n';
+				metadataStr = mStr;
+			}
 		}
 
 		metadata = {
-			firstName: '',
-			lastName: '',
-			party: '',
-			role: '',
-			electoralTerm: '',
+			speakers: [],
+			parties: [],
+			roles: [],
+			electoralTerms: [],
 			dateFrom: '',
 			dateTo: '',
-			speechId: ''
+			manifestoParties: [],
+			manifestoYearFrom: '',
+			manifestoYearTo: '',
+			manifestoThemes: []
 		};
 
-		
-                dispatch('submit', { prompt: finalPrompt, metadataStr });
+		dispatch('submit', { prompt: finalPrompt, metadataStr });
 	};
 
 	export let selectedToolIds = [];

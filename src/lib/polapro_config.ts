@@ -47,18 +47,19 @@ export const polaproConfig = {
     // Wenn 'false' gesetzt, wird der 'Antwort fortsetzen' (Continue Response) Button ausgeblendet
     showContinueResponseMessage: false,
 
-    // --- Metadaten Feature ---
-    // Hauptschalter für das Metadaten-Menü neben dem Plus-Button
+    // --- Filter Feature ---
+    // Hauptschalter für das Filter-Menü neben dem Plus-Button
     showMetadataMenu: true,
     
-    // Einzelne Felder im Metadaten-Menü
+    // Einzelne Felder im Filter-Menü
     metadataFields: {
-        firstName: true,
-        lastName: true,
-        party: true,
-        role: true,
-        electoralTerm: true,
+        speakers: true,
+        parties: true,
+        roles: true,
+        electoralTerms: true,
         dateRange: true,
-        speechId: true
+        manifestoParties: true,
+        manifestoYearRange: true,
+        manifestoThemes: true
     }
 };

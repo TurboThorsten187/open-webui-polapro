@@ -63,6 +63,7 @@
 		const contentHeight = contentEl.offsetHeight || 0;
 		const spaceBelow = window.innerHeight - rect.bottom - sideOffset;
 		const spaceAbove = rect.top - sideOffset;
+		const padding = 16; // minimum margin from viewport edge
 
 		// Auto-flip: prefer the requested side, but flip if not enough space
 		let openAbove = side === 'top';
@@ -73,9 +74,13 @@
 		}
 
 		if (openAbove) {
+			const availableHeight = rect.top - sideOffset - padding;
+			contentEl.style.maxHeight = `${Math.max(200, availableHeight)}px`;
 			contentEl.style.bottom = `${window.innerHeight - rect.top + sideOffset}px`;
 			contentEl.style.top = 'auto';
 		} else {
+			const availableHeight = window.innerHeight - rect.bottom - sideOffset - padding;
+			contentEl.style.maxHeight = `${Math.max(200, availableHeight)}px`;
 			contentEl.style.top = `${rect.bottom + sideOffset}px`;
 			contentEl.style.bottom = 'auto';
 		}
