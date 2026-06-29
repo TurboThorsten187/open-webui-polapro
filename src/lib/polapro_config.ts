@@ -1,7 +1,7 @@
 export const polaproConfig = {
     // Wenn 'false' gesetzt, wird der 'Neuigkeiten' (Changelog) Bildschirm nach dem Laden nicht automatisch angezeigt
     showWhatsNewOnFirstLoad: false,
-    
+
     // Wenn 'false' gesetzt, wird die Update-Benachrichtigung für Administratoren unten rechts nicht angezeigt
     showUpdateToast: false,
 
@@ -49,8 +49,8 @@ export const polaproConfig = {
 
     // --- Filter Feature ---
     // Hauptschalter für das Filter-Menü neben dem Plus-Button
-    showMetadataMenu: true,
-    
+    showMetadataMenu: false,
+
     // Einzelne Felder im Filter-Menü
     metadataFields: {
         speakers: true,

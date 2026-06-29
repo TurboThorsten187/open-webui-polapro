@@ -25,6 +25,8 @@
 	import Spinner from '$lib/components/common/Spinner.svelte';
 	import OnBoarding from '$lib/components/OnBoarding.svelte';
 	import SensitiveInput from '$lib/components/common/SensitiveInput.svelte';
+	import Modal from '$lib/components/common/Modal.svelte';
+	import XMark from '$lib/components/icons/XMark.svelte';
 	import { redirect } from '@sveltejs/kit';
 
 	const i18n = getContext('i18n');
@@ -39,6 +41,10 @@
 	let email = '';
 	let password = '';
 	let confirmPassword = '';
+
+	let acceptedDisclaimer = false;
+	let showDisclaimerModal = false;
+	let disclaimerContent = '';
 
 	let ldapUsername = '';
 
@@ -77,12 +83,29 @@
 		await setSessionUser(sessionUser);
 	};
 
+	const loadDisclaimer = async () => {
+		try {
+			const res = await fetch(`${WEBUI_API_BASE_URL}/polapro/disclaimer`);
+			if (res.ok) {
+				const data = await res.json();
+				disclaimerContent = data.content || '';
+			}
+		} catch (e) {
+			console.error('Failed to load disclaimer:', e);
+		}
+	};
+
 	const signUpHandler = async () => {
 		if ($config?.features?.enable_signup_password_confirmation) {
 			if (password !== confirmPassword) {
 				toast.error($i18n.t('Passwords do not match.'));
 				return;
 			}
+		}
+
+		if (!acceptedDisclaimer) {
+			toast.error($i18n.t('Bitte akzeptieren Sie den Datenschutzdisclaimer.'));
+			return;
 		}
 
 		const sessionUser = await userSignUp(name, email, password, generateInitialsImage(name)).catch(
@@ -185,6 +208,7 @@
 
 		loaded = true;
 		setLogoImage();
+		loadDisclaimer();
 
 		if (($config?.features.auth_trusted_header ?? false) || $config?.features.auth === false) {
 			await signInHandler();
@@ -365,6 +389,34 @@
 													name="confirm-password"
 													required
 												/>
+											</div>
+										{/if}
+
+										{#if mode === 'signup'}
+											<div class="mt-4 flex items-start gap-2.5">
+												<input
+													bind:checked={acceptedDisclaimer}
+													type="checkbox"
+													id="disclaimer-checkbox"
+													class="mt-1 accent-emerald-600 size-4 rounded-sm border-gray-300 dark:border-gray-700 bg-transparent text-emerald-600 focus:ring-emerald-500 focus:ring-offset-0 cursor-pointer"
+													required
+												/>
+												<label
+													for="disclaimer-checkbox"
+													class="text-xs text-left text-gray-600 dark:text-gray-400 font-normal leading-relaxed select-none cursor-pointer"
+												>
+													Ich habe den
+													<button
+														type="button"
+														class="underline text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 font-semibold"
+														on:click={() => {
+															showDisclaimerModal = true;
+														}}
+													>
+														Datenschutzdisclaimer
+													</button>
+													gelesen und willige in die Verarbeitung ein.
+												</label>
 											</div>
 										{/if}
 									</div>
@@ -603,3 +655,39 @@
 		{/if}
 	{/if}
 </div>
+
+<Modal bind:show={showDisclaimerModal} size="lg">
+	<div class="px-6 pt-5 dark:text-white text-black">
+		<div class="flex justify-between items-start">
+			<h2 class="text-xl font-medium m-0">
+				{$i18n.t("Einwilligungserklärung und Datenschutzhinweise")}
+			</h2>
+			<button class="self-center p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition" on:click={() => { showDisclaimerModal = false; }} aria-label={$i18n.t('Close')}>
+				<XMark className="size-5" />
+			</button>
+		</div>
+	</div>
+
+	<div class="w-full p-6 text-gray-700 dark:text-gray-100">
+		<div class="overflow-y-auto max-h-[30rem] pr-2 text-sm text-left leading-relaxed scrollbar-thin">
+			{#if disclaimerContent}
+				<div class="prose prose-sm dark:prose-invert max-w-none">
+					{@html DOMPurify.sanitize(marked(disclaimerContent))}
+				</div>
+			{:else}
+				<p class="text-gray-500 italic">Keine Datenschutzinformationen verfügbar.</p>
+			{/if}
+		</div>
+		<div class="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-850 mt-4 text-sm font-medium">
+			<button
+				on:click={() => {
+					acceptedDisclaimer = true;
+					showDisclaimerModal = false;
+				}}
+				class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition rounded-full shadow-sm"
+			>
+				<span>Akzeptieren & Schließen</span>
+			</button>
+		</div>
+	</div>
+</Modal>

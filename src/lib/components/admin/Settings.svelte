@@ -7,6 +7,7 @@
 	import { config } from '$lib/stores';
 	import { getBackendConfig } from '$lib/apis';
 	import Database from './Settings/Database.svelte';
+	import DataPipeline from './Settings/DataPipeline.svelte';
 
 	import General from './Settings/General.svelte';
 	import Pipelines from './Settings/Pipelines.svelte';
@@ -48,6 +49,7 @@
 			'audio',
 			'images',
 			'pipelines',
+			'data-pipeline',
 			'db'
 		].includes(tabFromPath)
 			? tabFromPath
@@ -243,6 +245,22 @@
 			title: 'Database',
 			route: '/admin/settings/db',
 			keywords: ['database', 'export', 'import', 'backup', 'chats', 'users']
+		},
+		{
+			id: 'data-pipeline',
+			title: 'Data Pipeline',
+			route: '/admin/settings/data-pipeline',
+			keywords: [
+				'data',
+				'pipeline',
+				'ingestion',
+				'speech',
+				'manifesto',
+				'weaviate',
+				'update',
+				'generation',
+				'rag'
+			]
 		}
 	];
 
@@ -496,6 +514,15 @@
 								d="M8 12.5c1.84 0 3.579-.37 4.914-1.037.366-.183.74-.41 1.086-.684V12c0 1.657-2.686 3-6 3s-6-1.343-6-3v-1.22c.346.273.72.5 1.087.683C4.42 12.131 6.16 12.5 8 12.5Z"
 							/>
 						</svg>
+					{:else if tab.id === 'data-pipeline'}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+							class="size-4"
+						>
+							<path fill-rule="evenodd" d="M14.447 3.026a.75.75 0 0 1 .527.921l-4.5 16.5a.75.75 0 0 1-1.448-.394l4.5-16.5a.75.75 0 0 1 .921-.527ZM16.72 6.22a.75.75 0 0 1 1.06 0l5.25 5.25a.75.75 0 0 1 0 1.06l-5.25 5.25a.75.75 0 1 1-1.06-1.06L21.44 12l-4.72-4.72a.75.75 0 0 1 0-1.06Zm-9.44 0a.75.75 0 0 1 0 1.06L2.56 12l4.72 4.72a.75.75 0 0 1-1.06 1.06L.97 12.53a.75.75 0 0 1 0-1.06l5.25-5.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+						</svg>
 					{/if}
 				</div>
 				<div class=" self-center">{$i18n.t(tab.title)}</div>
@@ -584,6 +611,8 @@
 					toast.success($i18n.t('Settings saved successfully!'));
 				}}
 			/>
+		{:else if selectedTab === 'data-pipeline'}
+			<DataPipeline />
 		{/if}
 	</div>
 </div>

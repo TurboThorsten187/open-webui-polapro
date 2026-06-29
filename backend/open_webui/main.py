@@ -97,6 +97,7 @@ from open_webui.routers import (
     utils,
     scim,
     terminals,
+    polapro,
 )
 
 from open_webui.routers.retrieval import (
@@ -701,6 +702,10 @@ async def lifespan(app: FastAPI):
 
     # Mark application as ready to accept traffic from a startup perspective.
     app.state.startup_complete = True
+
+    # Start PoLaPro pipeline maintenance state sync (polls agent every 15s)
+    app.state.POLAPRO_MAINTENANCE_MODE = False
+    polapro.start_maintenance_sync(app)
 
     yield
 
@@ -1370,6 +1375,9 @@ class RedirectMiddleware(BaseHTTPMiddleware):
 app.add_middleware(RedirectMiddleware)
 app.add_middleware(SecurityHeadersMiddleware)
 
+# PoLaPro maintenance mode middleware
+app.add_middleware(polapro.PolaProMaintenanceMiddleware)
+
 
 class APIKeyRestrictionMiddleware:
     def __init__(self, app):
@@ -1522,6 +1530,9 @@ if ENABLE_ADMIN_ANALYTICS:
     app.include_router(analytics.router, prefix='/api/v1/analytics', tags=['analytics'])
 app.include_router(utils.router, prefix='/api/v1/utils', tags=['utils'])
 app.include_router(terminals.router, prefix='/api/v1/terminals', tags=['terminals'])
+
+# PoLaPro data pipeline admin endpoints
+app.include_router(polapro.router, prefix='/api/v1/polapro', tags=['polapro'])
 
 # SCIM 2.0 API for identity management
 if ENABLE_SCIM:
@@ -2040,6 +2051,35 @@ def _get_dataset_freshness() -> str:
         log.debug(f'Failed to fetch dataset freshness from RAG server: {e}')
 
     return _dataset_freshness_cache.get('value') or 'Unbekannt'
+
+
+@app.get('/api/v1/dataset/metadata')
+async def get_dataset_metadata(request: Request, user=Depends(get_verified_user)):
+    """
+    Fetch the complete pipeline run metadata from the RAG server.
+    """
+    try:
+        rag_base_urls = app.state.config.OPENAI_API_BASE_URLS
+        if isinstance(rag_base_urls, list) and len(rag_base_urls) > 0:
+            rag_base_url = rag_base_urls[0]
+        else:
+            rag_base_url = str(rag_base_urls)
+
+        # Strip trailing /v1 if present to get the server root
+        rag_server_url = rag_base_url.rstrip('/').removesuffix('/v1')
+        url = f'{rag_server_url}/v1/dataset/metadata'
+
+        response = requests.get(url, timeout=2.0)
+        if response.status_code == 200:
+            return response.json()
+    except Exception as e:
+        log.error(f'Failed to fetch dataset metadata from RAG server: {e}')
+
+    return {
+        "speeches": {"last_speech_date": "Unbekannt", "meta": {}},
+        "manifestos": {"last_manifesto_year": "Unbekannt", "meta": {}}
+    }
+
 
 
 @app.get('/api/config')

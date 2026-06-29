@@ -55,7 +55,7 @@
 		getWeekday
 	} from '$lib/utils';
 	import { uploadFile } from '$lib/apis/files';
-	import { generateAutoCompletion } from '$lib/apis';
+	import { generateAutoCompletion, getDatasetMetadata } from '$lib/apis';
 	import { deleteFileById } from '$lib/apis/files';
 	import { getChatById } from '$lib/apis/chats';
 	import { getSessionUser } from '$lib/apis/auths';
@@ -71,6 +71,7 @@
 	import VoiceRecording from './MessageInput/VoiceRecording.svelte';
 
 	import ToolServersModal from './ToolServersModal.svelte';
+	import DatasetMetadataModal from './DatasetMetadataModal.svelte';
 
 	import RichTextInput from '../common/RichTextInput.svelte';
 	import Tooltip from '../common/Tooltip.svelte';
@@ -210,6 +211,8 @@
 	let inputContent = null;
 
 	let showInputVariablesModal = false;
+	let datasetMetadata = null;
+	let showMetadataModal = false;
 	let inputVariablesModalCallback = (variableValues) => {};
 	let inputVariables = {};
 	let inputVariableValues = {};
@@ -1126,6 +1129,13 @@
 			}
 
 			tools.set(await getTools(localStorage.token));
+
+			try {
+				const token = localStorage.token || '';
+				datasetMetadata = await getDatasetMetadata(token);
+			} catch (err) {
+				console.error('Failed to load dataset metadata:', err);
+			}
 		};
 		initialize();
 
@@ -2111,7 +2121,16 @@ class="bg-transparent hover:bg-gray-100 text-gray-700 dark:text-white dark:hover
 						</div>
 
 
-						{#if $config?.dataset_freshness}
+						{#if datasetMetadata}
+							<!-- svelte-ignore a11y-click-events-have-key-events -->
+							<!-- svelte-ignore a11y-no-static-element-interactions -->
+							<div
+								class="text-xs text-gray-400 dark:text-gray-500 text-center mt-0.5 cursor-pointer hover:underline hover:text-gray-600 dark:hover:text-gray-300 transition"
+								on:click={() => (showMetadataModal = true)}
+							>
+								Datenbestand: Reden bis {datasetMetadata.speeches?.last_speech_date || 'Unbekannt'} | Wahlprogramme bis {datasetMetadata.manifestos?.last_manifesto_year || 'Unbekannt'}
+							</div>
+						{:else if $config?.dataset_freshness}
 							<div class="text-xs text-gray-400 dark:text-gray-500 text-center mt-0.5">
 								Datenstand: {$config.dataset_freshness}
 							</div>
@@ -2129,6 +2148,10 @@ class="bg-transparent hover:bg-gray-100 text-gray-700 dark:text-white dark:hover
 			</div>
 		</div>
 	</div>
+{/if}
+
+{#if showMetadataModal && datasetMetadata}
+	<DatasetMetadataModal bind:show={showMetadataModal} metadata={datasetMetadata} />
 {/if}
 
 
