@@ -6,4 +6,6 @@ Durch Aktivierung der nachfolgenden Checkbox und Durchführung der Registrierung
 
     Ausschluss sensibler Daten (Nutzerverpflichtung): Es ist untersagt, personenbezogene, vertrauliche, geschäftskritische oder geschützte Daten (z. B. Klarnamen, Passwörter, interne Dokumente) in das Chatfenster einzugeben. Die Testeingaben sind zwingend auf fiktive Szenarien oder öffentlich zugängliche Informationen zu beschränken.
 
+Ich habe die Datenschutzhinweise gelesen und willige in die pseudonymisierte Verarbeitung meiner Chat-Eingaben sowie die Uebermittlung an den API-Dienstleister zu Evaluationszwecken ein.
+
 
