@@ -5,6 +5,7 @@
 	const dispatch = createEventDispatcher();
 
 	import { config, models, settings, theme, user } from '$lib/stores';
+	import { polaproConfig } from '$lib/polapro_config';
 
 	const i18n = getContext('i18n');
 
@@ -299,7 +300,7 @@
 			</div>
 		{/if}
 
-		{#if $user?.role === 'admin' || (($user?.permissions.chat?.controls ?? true) && ($user?.permissions.chat?.params ?? true))}
+		{#if $user?.role === 'admin' || (polaproConfig.showSettingsAdvancedParameters && (($user?.permissions.chat?.controls ?? true) && ($user?.permissions.chat?.params ?? true)))}
 			<div class="mt-2 space-y-3 pr-1.5">
 				<div class="flex justify-between items-center text-sm">
 					<div class="  font-medium">{$i18n.t('Advanced Parameters')}</div>

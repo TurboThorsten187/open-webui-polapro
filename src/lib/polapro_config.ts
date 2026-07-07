@@ -49,7 +49,7 @@ export const polaproConfig = {
 
     // --- Filter Feature ---
     // Hauptschalter für das Filter-Menü neben dem Plus-Button
-    showMetadataMenu: false,
+    showMetadataMenu: true,
 
     // Einzelne Felder im Filter-Menü
     metadataFields: {
@@ -61,5 +61,21 @@ export const polaproConfig = {
         manifestoParties: true,
         manifestoYearRange: true,
         manifestoThemes: true
-    }
+    },
+
+    // --- Settings UI Customization for non-admin accounts ---
+    // Wenn 'false' gesetzt, wird für Nicht-Admins der Bereich "Advanced Parameters" (Erweiterte Parameter) unter Allgemein ausgeblendet
+    showSettingsAdvancedParameters: false,
+
+    // Wenn 'false' gesetzt, wird für Nicht-Admins alles unter "Chat" im Interface-Tab ausgeblendet
+    showInterfaceChatSettings: false,
+
+    // Wenn 'false' gesetzt, wird für Nicht-Admins alles unter "Artifacts" im Interface-Tab ausgeblendet
+    showInterfaceArtifactsSettings: false,
+
+    // Wenn 'false' gesetzt, wird für Nicht-Admins alles unter "Voice" im Interface-Tab ausgeblendet
+    showInterfaceVoiceSettings: false,
+
+    // Wenn 'false' gesetzt, wird für Nicht-Admins alles unter "File" im Interface-Tab ausgeblendet
+    showInterfaceFileSettings: false
 };

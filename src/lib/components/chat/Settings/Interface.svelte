@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { config, models, settings, user } from '$lib/stores';
+	import { polaproConfig } from '$lib/polapro_config';
 	import { createEventDispatcher, onMount, onDestroy, getContext } from 'svelte';
 	import { toast } from 'svelte-sonner';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
@@ -586,7 +587,8 @@
 				</div>
 			{/if}
 
-			<div class=" my-2 text-sm font-medium">{$i18n.t('Chat')}</div>
+			{#if $user?.role === 'admin' || polaproConfig.showInterfaceChatSettings}
+				<div class=" my-2 text-sm font-medium">{$i18n.t('Chat')}</div>
 
 			<div>
 				<div class=" py-0.5 flex w-full justify-between">
@@ -1218,8 +1220,10 @@
 					</div>
 				</div>
 			</div>
+			{/if}
 
-			<div class=" my-2 text-sm font-medium">{$i18n.t('Artifacts')}</div>
+			{#if $user?.role === 'admin' || polaproConfig.showInterfaceArtifactsSettings}
+				<div class=" my-2 text-sm font-medium">{$i18n.t('Artifacts')}</div>
 
 			<div>
 				<div class=" py-0.5 flex w-full justify-between">
@@ -1277,8 +1281,10 @@
 					</div>
 				</div>
 			</div>
+			{/if}
 
-			<div class=" my-2 text-sm font-medium">{$i18n.t('Voice')}</div>
+			{#if $user?.role === 'admin' || polaproConfig.showInterfaceVoiceSettings}
+				<div class=" my-2 text-sm font-medium">{$i18n.t('Voice')}</div>
 
 			<div>
 				<div class=" py-0.5 flex w-full justify-between">
@@ -1317,8 +1323,10 @@
 					</div>
 				</div>
 			</div>
+			{/if}
 
-			<div class=" my-2 text-sm font-medium">{$i18n.t('File')}</div>
+			{#if $user?.role === 'admin' || polaproConfig.showInterfaceFileSettings}
+				<div class=" my-2 text-sm font-medium">{$i18n.t('File')}</div>
 
 			<div>
 				<div class=" py-0.5 flex w-full justify-between">
@@ -1371,6 +1379,7 @@
 						</div>
 					</div>
 				</div>
+			{/if}
 			{/if}
 		</div>
 	</div>
