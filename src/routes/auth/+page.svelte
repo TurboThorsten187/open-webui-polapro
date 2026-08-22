@@ -398,7 +398,7 @@
 													bind:checked={acceptedDisclaimer}
 													type="checkbox"
 													id="disclaimer-checkbox"
-													class="mt-1 accent-emerald-600 size-4 rounded-sm border-gray-300 dark:border-gray-700 bg-transparent text-emerald-600 focus:ring-emerald-500 focus:ring-offset-0 cursor-pointer"
+													class="mt-1 accent-emerald-600 size-4 rounded-sm border-gray-300 dark:border-gray-700 hover:border-emerald-500 dark:hover:border-emerald-500 bg-transparent text-emerald-600 focus:ring-0 focus:outline-none cursor-pointer"
 													required
 												/>
 												<label
